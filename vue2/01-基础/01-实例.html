@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01-实例</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>{{ message }}</h2>
+      <!-- 这里的 message 将不会更新（因为 `Object.freeze()` 的缘故） -->
+      <button @click="message = 'new message'">修改 message</button>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      const obj = { title: 'vue' }
+
+      // 创建一个 Vue 实例
+      var vm = new Vue({
+        // 将 obj 对象中的所有 property 加入到 Vue 的响应式系统中
+        data: obj,
+      })
+
+      // 更改 property 值也会影响到原始 obj
+      vm.title = 'vue2'
+      console.log(obj.title) // vue2
+
+      // 反之亦然
+      obj.title = 'vue3'
+      console.log(vm.title) // vue3
+
+      // --------------------------------------------------------------------------------------------
+
+      // 当然了，如果仅仅是像上面这样，那么将和 JS 中普通对象的引用传值没有区别，Vue 在其中做的其实是当数据发生变更时，视图也会同步进行更新
+      // NOTE: 值得注意的是，只有当实例被创建之前就已经存在于 data 中的 property 才会加入到响应式系统中，也就是说
+      // 如果此时你额外手动添加新的 property 于 vm 中，那么其的改动将不会触发任何视图更新，如果你知道在晚些时候需要一个 property
+      // 最好的做法是一开始给它设置初始值，以便于 Vue 响应式更新
+      vm.newTitle = 'vue4'
+      console.log(obj.newTitle) // undefined
+
+      // NOTE: 唯一的例外，使用 `Object.freeze()` 冻结的数据将不会加入到响应式系统中，这会阻止修改现有的 property
+      const newObj = { message: 'hello vue2' }
+
+      Object.freeze(newObj)
+
+      const vm2 = new Vue({
+        el: '#app',
+        data: newObj,
+
+        // 生命周期钩子（Lifecycle）
+        // 每个 Vue 实例在被创建的时候都要经过一系列的初始化过程，如：数据监听、编译模板、挂载、渲染等，同时在这个过程中也会执行一些叫
+        // “生命周期钩子”的钩子函数，给了用户在不同阶段添加自己代码的机会
+        // NOTE: 不要在选项 property 或者回调上使用箭头函数，因为箭头函数没有 `this`，`this` 会作为变量一直向上级词法作用域查找，直至找到为止
+        // 这就经常可能出现 Uncaught TypeError: Cannot read property of undefined 或 this.xxxMethod is not a function 等等错误
+        beforeCreate() {
+          console.log('beforeCreate')
+        },
+        created() {
+          console.log('created')
+        },
+        beforeMount() {
+          console.log('beforeMount')
+        },
+        mounted() {
+          console.log('mounted')
+        },
+        beforeUpdate() {
+          console.log('beforeUpdate')
+        },
+        updated() {
+          console.log('updated')
+        },
+        beforeDestroy() {
+          console.log('beforeDestroy')
+        },
+        destroyed() {
+          console.log('destroyed')
+        },
+      })
+    </script>
+  </body>
+</html>

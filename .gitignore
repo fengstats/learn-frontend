@@ -1,0 +1,9 @@
+# dev
+node_modules/
+**/node_modules/
+
+# prod
+dist/
+
+# mac
+.DS_Store
