@@ -1,5 +1,5 @@
 ## 来学学前端叭！ 👀
 
-> **Note**
+`> **Note**`
 
 **PUT FIRST THINGS FIRST**（先做重要的事）
