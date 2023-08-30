@@ -4,10 +4,90 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>02-模板语法</title>
+    <style>
+      .green-color {
+        color: green;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <!-- 1. 插值 -->
+      <!-- 1.1 文本插值 -->
+      <p>Using Mustache: {{ msg }}</p>
+      <p v-once>Using v-once directive: {{ msg}}</p>
+
+      <!-- 1.2 原始 HTML -->
+      <p>Using Raw HTML: {{ rawHtml }}</p>
+      <!-- NOTE: 随意在站点上动态的渲染任意的 HTML 可能会非常危险，因为会很容易导致 XSS 攻击，建议只对可信内容使用 HTML 插值，绝对不要将用户提供的内容作为插值 -->
+      <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+
+      <!-- 1.3 Attribute：Mustache 语法不能作用在属性上，此时需要使用 v-bind -->
+      <div v-bind:class="className">this div bind the `green-color` CSS class</div>
+      <!-- NOTE: 对于布尔类型的 attribute v-bind 工作起来会略有不同（有值意味着 `true`），在下面的例子中，如果 `isButtonDisabled` 值为 `null`、`undefined` 或 `false` 的时候，该 attribute 甚至不会被渲染到 `<button>` 元素中  -->
+      <button v-bind:disabled="isButtonDisabled">Button</button>
+
+      <!-- 1.4 在模板中使用 JavaScript 表达式的支持 -->
+      <p>{{ 1 + 2 + 3 + 4 }}</p>
+      <p>{{ isAgree ? 'yes' : 'no'}}</p>
+      <p>{{ msg.split('').reverse().join('') }}</p>
+      <!-- 下面的例子不会生效 -->
+      <!-- 这是语句 -->
+      <!-- <p>{{ var a = 1 }}</p> -->
+      <!-- 这是流控制语句 -->
+      <!-- p>{{ if (true) { console.log('hello') } }}</p> -->
+
+      <hr />
+
+      <!-- 2. 指令 -->
+      <!-- 在我们前面使用到的 v-once、v-html 以及 v-bind 都是 Vue 提供给我们的一些内置指令，简单理解就是带有 `v-` 前缀的特殊 attribute，指令的预期是单个 JS 表达式（v-for 例外）指令的职责就是：当表达式的值改变时，将其改变的影响作用于 DOM 之上 -->
+      <p v-if="seen">now you seen me</p>
+      <!-- 正如上面的例子一样，我们通过 v-if 这个指令，来监听 seen 这个 property 表达式的值（true 或 false），当这个值改变时控制 <p> 元素插入与移除 -->
+
+      <!-- 2.1 参数：一些指令是可以接收一个参数的，通过在指令名称后添加 `:`（冒号）表示，我们在 1.3 Attribute 中已经通过 v-bind 演示过了，下面我们通过 v-on 来监听 DOM 事件改变 `msg` 这个 property 的值  -->
+      <button v-on:click="msg = 'new message'">update msg data</button>
+
+      <!-- 2.2 动态参数：Vue2.6+ 新增特性，可以使用方括号包围一个 JS 表达式作为一个指令的参数 -->
+      <a v-bind:[attributeName]="`https://www.baidu.com/s?wd=${msg}`">百度</a>
+      <a href="#" v-on:[event]="doSomeThing">click me</a>
+      <!-- NOTE: 动态参数会存在一些约束，如下 -->
+      <!-- 2.2.1 对于动态参数值：预期要求一个字符串，异常情况下为 `null`，这个特殊的值可以用于显性的移除绑定，任何其它非字符串类型的值将会触发一个警告 -->
+      <button @click="attributename = null">remove attributeName bind</button>
+      <!-- 2.2.2 对于动态参数表达式：有一些语法约束，如空格和引号（因为放在 HTML attribute 中是无效的），将会触发编译警告，可以通过使用没有空格或引号的表达式（例如将复杂的表达式通过计算属性来替代 -->
+      <!-- 2.2.3 对于动态参数表达式：在 DOM 中使用模板时（直接在 HTML 文件中写），需要避免使用大写字符来命名键名，因为浏览器会将 attribute 名强制转换为小写，若你的实例中对应的 property 是大写，那这可能会导致代码无法正常工作 -->
+
+      <!-- 2.3 修饰符：以 `.`（半角句号）指明的特殊后缀，用于表示一个指令应该以特殊的方式绑定，我们这里可以通过 .once 来演示一下（前面演示过 v-once，效果类似），后续在探索 v-on&v-for 的过程中，我们将看到更多的修饰符例子 -->
+      <br />
+      <button @click.once="onceOutput">i can only click once to output</button>
+
+      <!-- 3. 缩写：也被称之为语法糖，主要是为了给一些常用的指令提供更加便捷的编写方式，使开发体验更好 -->
+      <!-- 3.1 v-bind 的缩写是 `:` -->
+      <!-- 3.2 v-on 的缩写是 `@` -->
+    </div>
     <script src="../vue.js"></script>
-    <script></script>
+    <script>
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          msg: 'hello vue',
+          rawHtml: `<span style="color: red;">this is red span label</span>`,
+          className: 'green-color',
+          isButtonDisabled: undefined,
+          isAgree: true,
+          seen: true,
+          // 因为我们是直接在 DOM 中使用模板的，所以受到动态参数表达式的约束，需要将原本大写 Name 变成 name，否则代码无法正常工作
+          attributename: 'href',
+          event: 'click',
+        },
+        methods: {
+          doSomeThing() {
+            alert('hello vue')
+          },
+          onceOutput() {
+            alert('congratulations on your successful click! but you can only seen me once')
+          },
+        },
+      })
+    </script>
   </body>
 </html>
