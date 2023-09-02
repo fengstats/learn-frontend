@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>计算属性和侦听器</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 1. 计算属性 -->
+      <!-- 1.1. 基础使用 -->
+      <p>{{ msg }}</p>
+      <!-- 模板内的表达式非常方便，但设计它们的初衷是用于简单运算的，因为放入太多的逻辑会让模板过重而且难以维护，如下： -->
+      <p>{{ msg.split('').reverse().join('') }}</p>
+      <!-- 上面的模板，你很难一眼看出它是在干什么，所以，对于任何的复杂逻辑，你都应当使用计算属性 -->
+      <!-- NOTE: 你可以想绑定普通的 property（例如上面的 `msg`）一样来绑定计算属性，Vue 内部是知道 reverseMessage 依赖于 msg 的，所以当 msg 改变时，所有依赖于 reverseMessage 的绑定也会同步更新 -->
+      <p>{{ reverseMessage }}</p>
+
+      <!-- 1.2. 计算属性 vs 方法 -->
+      <hr />
+      <!-- 当然，你可以通过方法来做到和计算属性同样效果的事情，如下： -->
+      <p>{{ reverseMessageFunc() }}</p>
+      <!-- 那此时你可能要提出疑问了，为什么方法能做到的事情我们还需要额外计算属性来呢？ -->
+      <!-- NOTE: 问得好，因为计算属性之所以叫这个名字，是因为它会基于 “响应式依赖” 数据进行缓存，就是说如果计算属性依赖的数据没有改变，那么将会立即返回上次缓存的结果，而不是重新执行函数 -->
+      <!-- 同样的，这也意味着下面的计算属性将不会再更新，因为 `Date.now()` 并不是一个 “响应式依赖” -->
+      <p>computed: {{ nowTime }}</p>
+      <p>methods: {{ getNowTime() }}</p>
+      <!-- 通过下面的按扭点击我们可以看到效果，计算属性点击多次后仍与首次渲染结果一致，方法则是每次点击都会更新值 -->
+      <button @click="callNowTime">调用计算属性和方法看看当前时间戳（控制台查看）</button>
+    </div>
+
+    <hr />
+    <div id="app2">
+      <!-- 1.3. 计算属性 vs 侦听器 -->
+      <!-- Vue 提供了一种更通用的方式来观察和响应 Vue 实例中的数据变化，“侦听属性”，当你有数据需要根据其它数据的值变化而更新时，可以使用到，但是通常我们会滥用侦听器，有些事情交给计算属性反而会更好，比如下面这个例子 -->
+      <input type="text" v-model="firstName" />
+      <input type="text" v-model="lastName" />
+      <p>{{ fullName }}</p>
+    </div>
+
+    <hr />
+    <div id="app3">
+      <!-- 对比下面通过计算属性实现的相同案例，会发现上面的代码实现是重复以及命令式的，对于开发者或者维护并不友好 -->
+      <input type="text" v-model="firstName" />
+      <input type="text" v-model="lastName" />
+      <p>{{ fullName }}</p>
+
+      <hr />
+
+      <input type="text" v-model="fullName2" />
+      <p>{{ fullName2 }}</p>
+    </div>
+
+    <hr />
+    <div id="demo">
+      <!-- 2. 侦听器 -->
+      <!-- 虽然计算属性在大部分情况下更合适，但是难免，肯定会有一些情况需要使用侦听器来处理，当需要在数据变化时执行异步或者开销较大的操作时，这个方式是最适合的，我们下面通过一个小案例来看看 watch 的效果 -->
+      <p>
+        提问一个 yes/no 的问题：
+        <input v-model="question" />
+      </p>
+      <p>回答：{{ answer }}</p>
+    </div>
+
+    <!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
+    <!-- 提供这些功能以保持精简。这也可以让你自由选择自己更熟悉的工具。 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <script src="../vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          msg: 'hello vue',
+        },
+        computed: {
+          // value 为 function 默认为该计算属性的 getter
+          reverseMessage: function () {
+            // this 指向 `vm` 实例
+            return this.msg.split('').reverse().join('')
+          },
+          nowTime: function () {
+            return Date.now()
+          },
+        },
+        methods: {
+          reverseMessageFunc: function () {
+            return this.msg.split('').reverse().join('')
+          },
+          getNowTime: function () {
+            return Date.now()
+          },
+          // 调用计算属性和方法看看当前时间戳
+          callNowTime: function () {
+            console.log('computed:', this.nowTime)
+            console.log('methods:', this.getNowTime())
+          },
+        },
+      })
+
+      const vm2 = new Vue({
+        el: '#app2',
+        data: {
+          firstName: 'Feng',
+          lastName: 'Liu',
+          fullName: 'Feng Liu',
+        },
+        watch: {
+          firstName: function (newVal) {
+            this.fullName = newVal + ' ' + this.lastName
+          },
+          lastName: function (newVal) {
+            this.fullName = this.firstName + ' ' + newVal
+          },
+        },
+      })
+
+      const vm3 = new Vue({
+        el: '#app3',
+        data: {
+          firstName: 'Feng',
+          lastName: 'Liu',
+        },
+        computed: {
+          // 舒服多了不是吗？
+          fullName: function () {
+            return this.firstName + ' ' + this.lastName
+          },
+          // 1.4. 计算属性的 setter（下面的代码与上面无异，只是手动编写了 setter 方法）
+          // value 为 Object
+          fullName2: {
+            // getter
+            get: function (vm) {
+              // 函数参数指向的是当时 Vue 实例
+              console.log('fullName2 getter', vm === this)
+              return this.firstName + ' ' + this.lastName
+            },
+            // setter
+            set: function (newVal) {
+              console.log('fullName setter newVal', newVal)
+              const names = newVal.split(' ')
+              this.firstName = names.shift()
+              this.lastName = names.join(' ')
+              // 不需要返回值
+            },
+          },
+        },
+      })
+
+      // 侦听器 demo
+      const demo = new Vue({
+        el: '#demo',
+        data: {
+          question: '',
+          answer: '你不问我，我怎么回答？',
+        },
+        watch: {
+          // 监听 `question` 是否发生改变
+          question: function (newQuestion, oldQuestion) {},
+        },
+      })
+    </script>
+  </body>
+</html>

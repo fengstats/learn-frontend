@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>02-模板语法</title>
+    <title>模板语法</title>
     <style>
       .green-color {
         color: green;
@@ -72,7 +72,7 @@
           msg: 'hello vue',
           rawHtml: `<span style="color: red;">this is red span label</span>`,
           className: 'green-color',
-          isButtonDisabled: undefined,
+          isButtonDisabled: true,
           isAgree: true,
           seen: true,
           // 因为我们是直接在 DOM 中使用模板的，所以受到动态参数表达式的约束，需要将原本大写 Name 变成 name，否则代码无法正常工作
