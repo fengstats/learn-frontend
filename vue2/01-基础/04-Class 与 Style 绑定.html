@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class 与 Style 绑定</title>
+    <style>
+      .active {
+        color: #16a085;
+      }
+      .text-danger {
+        color: #f00;
+      }
+      .other {
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 通过 v-bind 来动态给 class 和 style（内联样式）做数据绑定，Vue 在这一块专门做了增强，表达式的结果除了字符串以外，还可以是对象或者数组 -->
+    <div id="app">
+      <!-- 1. 绑定 HTML Class -->
+      <h2 :class="className">1.1. 对象语法</h2>
+      <!-- :class 也可以与普通的 class attribute 共存 -->
+      <p class="other" :class="classObject">
+        当需要绑定的 HTML Class 有一定复杂度的表达式计算时，通常情况下是直接绑定一个返回对象的计算属性
+      </p>
+
+      <h2 :class="classList">1.2. 数组语法</h2>
+      <p :class="classList2">
+        根据条件切换列表中的 class，我们可以通过三元表达式，甚至你也可以在数组语法内写对象语法的形式来实现
+      </p>
+
+      <h2>1.3. 用在组件上</h2>
+      <my-component
+        class="baz boo"
+        msg="msg 这个 attribute 是用于组件内部接收的，现在这个组件上的 class 为 baz boo foo bar 四个"
+      ></my-component>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      // 全局组件注册，可以直接在实例的 template 或 DOM 中使用
+      Vue.component('my-component', {
+        props: ['msg'],
+        template: '<p class="foo bar">{{ msg }}</p>',
+      })
+
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          isActive: true,
+          error: null,
+          className: {
+            // 'active' 这个 className 是否绑定取决于当前这个 property 的 value 经过”布尔值“转换后是否是一个 truthy（真值，为 `true` 的值），参考 MDN：https://developer.mozilla.org/zh-CN/docs/Glossary/Truthy
+            // 除 false、0、-0、0n、""、null、undefined 和 NaN 以外的皆为真值
+            active: 1,
+          },
+          classList: ['active'],
+        },
+        computed: {
+          classObject: function () {
+            return {
+              active: this.isActive && !this.error,
+              'text-danger': this.error && this.error.type === 'fatal',
+            }
+          },
+          classList2: function () {
+            return [this.isActive ? 'other' : '', { 'text-danger': true }]
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
