@@ -60,6 +60,7 @@
         <input v-model="question" />
       </p>
       <p>回答：{{ answer }}</p>
+      <img :src="answerImage" alt="" width="200" />
     </div>
 
     <!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
@@ -153,10 +154,35 @@
         data: {
           question: '',
           answer: '你不问我，我怎么回答？',
+          answerImage: '',
         },
         watch: {
           // 监听 `question` 是否发生改变
-          question: function (newQuestion, oldQuestion) {},
+          question: function (newQuestion, oldQuestion) {
+            this.answer = '等待用户输入中...'
+            this.debouncedGetAnswer()
+          },
+        },
+        created: function () {
+          // 我们通过 `_.debounce` 来限制用户输入频率后调用接口的频率
+          this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+        },
+        methods: {
+          getAnswer: async function () {
+            // 若不包含问号
+            if (!/[?？]/.test(this.question)) {
+              this.answer = '问题通常包含一个问号哦~'
+              return
+            }
+            this.answer = '正在思考中...'
+            try {
+              const { data } = await axios.get('https://yesno.wtf/api')
+              this.answer = _.capitalize(data.answer)
+              this.answerImage = data.image
+            } catch (err) {
+              this.answer = '请求失败，请稍后再试：' + err
+            }
+          },
         },
       })
     </script>
