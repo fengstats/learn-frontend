@@ -19,7 +19,7 @@
   <body>
     <!-- 通过 v-bind 来动态给 class 和 style（内联样式）做数据绑定，Vue 在这一块专门做了增强，表达式的结果除了字符串以外，还可以是对象或者数组 -->
     <div id="app">
-      <!-- 1. 绑定 HTML Class -->
+      <h1>1. 绑定 HTML Class</h1>
       <h2 :class="className">1.1. 对象语法</h2>
       <!-- :class 也可以与普通的 class attribute 共存 -->
       <p class="other" :class="classObject">
@@ -31,11 +31,33 @@
         根据条件切换列表中的 class，我们可以通过三元表达式，甚至你也可以在数组语法内写对象语法的形式来实现
       </p>
 
-      <h2>1.3. 用在组件上</h2>
+      <h2>1.3. 在组件中使用</h2>
       <my-component
         class="baz boo"
-        msg="msg 这个 attribute 是用于组件内部接收的，现在这个组件上的 class 为 baz boo foo bar 四个"
+        msg="msg 这个 attribute 是用于组件内部接收的，现在这个组件上的 class 为 baz boo foo bar' 四个"
       ></my-component>
+
+      <h1>2. 绑定内联样式</h1>
+      <h2>2.1. 对象语法</h2>
+      <p :style="cssStyles">
+        :style 中使用 CSS property 名可以使用驼峰式（camelCase）或横线分隔（kebab-case，需要使用引号括起来）命名
+      </p>
+      <h2>2.2. 数组语法</h2>
+      <p :style="[baseStyles, cssStyles]">数组语法可以让多个对象样式作用在一个元素上</p>
+      <h2>2.3. 自动添加前缀</h2>
+      <p>
+        当 :style 使用需要添加的浏览器引擎前缀的 CSS property 时，如 `transform` 等，Vue
+        会自动侦测并添加相应前缀，参考：<a
+          href="https://developer.mozilla.org/zh-CN/docs/Glossary/Vendor_Prefix"
+          target="_blank"
+          >浏览器引擎前缀</a
+        >
+      </p>
+      <h2>2.4. 多重值</h2>
+      <p :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">
+        从 Vue2.3.0+ 开始，支持给 style 中绑定的某个 property
+        提供一个包含多个值的数组，一般用于提供多个带前缀的值，这样写只会渲染数组中最后一个被浏览器支持的值
+      </p>
     </div>
     <script src="../vue.js"></script>
     <script>
@@ -56,6 +78,8 @@
             active: 1,
           },
           classList: ['active'],
+          baseStyles: { padding: '10px' },
+          cssStyles: { color: '#6c5ce7', backgroundColor: '#f1f2f6', 'border-style': 'solid' },
         },
         computed: {
           classObject: function () {
