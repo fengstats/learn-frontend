@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>test</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>{{ n1 }}</h2>
+      <h2>{{ test() }}</h2>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          n1: '1',
+          n2: '2',
+          n3: '3',
+        },
+        methods: {
+          test: function () {
+            // 可以手动更改一下 this.n1 的值，发现这个方法也会被调用
+            // NOTE: 我的理解，Vue 实例的响应式数据如果有 DOM 绑定，在数据变更后，居然是重新渲染整个相关的 DOM 节点（包括其他绑定在 DOM 节点上的响应式数据），我还以为是局部单个刷新的，应该是以组件为 DOM 更新的单元了，当前这个 Vue 实例就是以 #app 选择器的内容为 DOM 更新的一个单元
+            console.log('———————— test 调用')
+            return this.n2
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
