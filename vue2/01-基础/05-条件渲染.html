@@ -7,7 +7,6 @@
   </head>
   <style>
     .note {
-      font-weight: bold;
       color: #16a085;
     }
   </style>
@@ -69,9 +68,11 @@
           v-if 如何一开始表达式条件为假，则不会渲染任何元素，直到表达式为真时才会渲染，v-show
           不管初始条件是什么，都会渲染元素，只是渲染之后会根据 CSS 进行切换而已
         </li>
-        <li>v-if 是真正的 ”条件渲染“，在切换过程中，内部的事件监听与子组件会适当地进行挂载与销毁</li>
+        <li>v-if 是真正的 ”条件渲染“，在切换过程中，条件内的事件监听与子组件会适当地进行重建与销毁</li>
       </ul>
-      <p class="note">总结：v-if 切换开销高，v-show 初始渲染开销高，因此，需要频繁的切换，选 v-show，否则选 v-if</p>
+      <p class="note">
+        总结：v-if 的切换开销高，v-show 的初始渲染开销高，因此，如果需要频繁的切换，选 v-show，否则选 v-if
+      </p>
 
       <h1>4. v-if 与 v-for 一起使用</h1>
       <blockquote style="color: #ff4757">不推荐同时使用</blockquote>

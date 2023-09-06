@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>列表渲染</title>
+    <style>
+      #app {
+        padding-bottom: 500px;
+      }
+      .note {
+        color: #16a085;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>1. 用 v-for 把数组内元素一一渲染</h1>
+      <p>
+        v-for 的指令是需要基于一个数组来渲染，通过 `item in items` 的语法，items 是数组名称，item
+        是可以自定义的元素别名，key 我们在条件渲染已经讲过
+      </p>
+      <ul>
+        <li v-for="item in items" :key="item.message">{{ item.message }}</li>
+      </ul>
+      <p>
+        在 v-for 内的代码块中，优先访问父作用域的 property（比如这里的 index 在实例中也有定义），同时 v-for
+        还支持第二个参数（当前数组元素的索引值，下标）
+      </p>
+      <ul>
+        <li>index: {{ index }}</li>
+        <li v-for="(item, index) in items" :key="index">{{ index + 1 }}. {{ item.message }}</li>
+      </ul>
+      <p class="note">
+        你还可以使用 `of` 来替代 `in` 作为遍历分隔符，因为它更接近 JavaScript 迭代器的语法（一般 js 中 for in 是遍历
+        key，而 for of 才是遍历 value），这在 Vue 中没有区别
+      </p>
+      <ul>
+        <li v-for="(item, index) of items">{{ index + 1 }}. {{ item.message }}</li>
+      </ul>
+
+      <h1>2. 通过 v-for 遍历对象</h1>
+      <ul>
+        <li v-for="(value, key, index) of object">{{ index }}. {{ key }}: {{ value }}</li>
+      </ul>
+      <p>v-for 遍历对象时第一个参数为对象内 property 的值，第二个参数为 key，第三个参数为下标</p>
+      <p class="note">
+        在遍历对象时，会按照 `Object.keys()` 的结果遍历，但不恩纳给保证它的结果在不同的 JavaScript 引擎下都保持一致
+      </p>
+
+      <h1>3. 维护状态（key 的妙用）</h1>
+      <p class="note">
+        我们在条件渲染的时候讲过 Vue 为了更高效的渲染，会根据对比复用已有元素，这就导致了当我们通过 v-for
+        遍历渲染了一堆元素之后，更新了某个元素（比如删除第一个），它会默认采用 ”就地更新“ 的策略，Vue 不会移动 DOM
+        元素来匹配对应更新的数据项顺序（位置），导致出现：第二个 DOM 节点将数据更新到了第一个 DOM
+        节点，第三个更新到第二个，以此类推，直到最后一个 DOM 节点被删除，是的，这看起来很蠢
+      </p>
+      <p>
+        在使用 v-for 时，除非遍历的内容很简单，或者你是刻意依赖默认行为来得到性能上的提升，否则尽可能的提供一个唯一的
+        key attribute，一般在你进行更新数组时的得到一些性能优化
+      </p>
+      <p class="note">
+        注意不要使用对象或数组这种非基本数据类型值作为 key 的 value，请使用字符串与数值类型的值，更多 key attribute
+        请参考：
+        <a href="https://v2.cn.vuejs.org/v2/api/#key" target="_blank">key 的 API 文档</a>
+      </p>
+      <ul>
+        <li v-for="item of items" :key="item.id">{{ item.message }}</li>
+      </ul>
+
+      <h1>4. 数组更新检测</h1>
+      <h2>4.1 变更方法（Vue 中会触发视图更新的数组方法）</h2>
+      <ul>
+        <li v-for="methodName of updateMethods">{{ methodName}}</li>
+      </ul>
+      <p class="note">你可以打开控制台（F12），自己来试试上面这些方法，比如 vm.updateMethods.push('new()')</p>
+      <h2>4.2 替换数组（返回新数组，非变更方法）</h2>
+      <ul>
+        <li v-for="methodName of notUpdateMethods">{{ methodName}}</li>
+      </ul>
+      <p>vm.noteUpdateMethods = vm.notUpdateMethods.filter((item) => item == 'concat()')</p>
+      <p>
+        通过上面的方式替换数组并不会丢弃掉现有 DOM
+        并重新渲染整个列表，而是会用一个含有相同元素的数组区替换原有数组，所以还是很高效
+      </p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          index: 100,
+          items: [
+            { id: 1, message: 'Foo' },
+            { id: 2, message: 'Bar' },
+          ],
+          object: {
+            title: '如何在 Vue 中遍历对象？',
+            author: '小陈',
+            publishedAt: '2023-09-06',
+          },
+          updateMethods: [
+            'push()',
+            'pop()',
+            'shift()',
+            'unshift()',
+            'splice(start, deleteCount, item1, item2, ...)',
+            'reverse()',
+            'sort()',
+          ],
+          notUpdateMethods: ['filter()', 'concat()', 'slice()', 'map()', 'vm.items[index] = xx'],
+        },
+      })
+    </script>
+  </body>
+</html>
