@@ -9,6 +9,7 @@
     <div id="app">
       <h2>{{ n1 }}</h2>
       <h2>{{ test() }}</h2>
+      <p v-for="value of user">{{ value }}</p>
     </div>
     <script src="../vue.js"></script>
     <script>
@@ -18,6 +19,10 @@
           n1: '1',
           n2: '2',
           n3: '3',
+          user: {
+            name: 'chen',
+            age: 18,
+          },
         },
         methods: {
           test: function () {
