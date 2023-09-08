@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .grid-container {
+        position: relative;
+        display: grid;
+        grid-template-columns: 80px 80px 80px;
+        grid-template-rows: 80px 80px 80px;
+        grid-gap: 10px;
+        max-width: 300px;
+        max-height: 260px;
+        margin: 40px auto 0;
+        overflow-y: overlay;
+      }
+
+      .grid-item {
+        padding: 20px;
+        text-align: center;
+        transition: all 500ms 0s;
+        cursor: pointer;
+        color: #fff;
+        background-color: #000;
+      }
+
+      .grid-item.active {
+        grid-column: 1 / span 2;
+        grid-row: 1 / span 3;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: #ff6b81;
+      }
+
+      .grid-item.merge {
+        grid-column: 3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-item">1</div>
+      <div class="grid-item">2</div>
+      <div class="grid-item">3</div>
+      <div class="grid-item">4</div>
+      <div class="grid-item">5</div>
+      <div class="grid-item">6</div>
+      <div class="grid-item">7</div>
+      <div class="grid-item">8</div>
+      <div class="grid-item">9</div>
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      const gridItems = $('.grid-item')
+      for (let i = 0; i < gridItems.length; i++) {
+        gridItems[i].onclick = function () {
+          let currentClass = 'grid-item'
+          let siblingsClass = 'grid-item'
+          // 缩小：所有元素回归 grid-item
+          // 放大：当前元素添加 active，其他元素添加 merge
+          if (!$(this).hasClass('active')) {
+            currentClass += ' active'
+            siblingsClass += ' merge'
+          }
+          // 删掉所有样式是为了避免多层逻辑的混乱校验（脑子不好使，不会写）
+          $(this).removeClass().addClass(currentClass).siblings().removeClass().addClass(siblingsClass)
+        }
+      }
+    </script>
+  </body>
+</html>
