@@ -11,22 +11,18 @@
       <h1>1. 显示过滤/排序后的结果</h1>
       <p>
         如果我们想要显示一个经过过滤或者排序后的数组，不更改或者重置原始数组数据，这种情况下我们有两种方案，第一种，通过计算属性来返回过滤后的结果直接
-        v-for：
+        v-for
       </p>
-      <ul>
-        <li v-for="n of evenNumbers">{{ n }}</li>
-      </ul>
-      <p>第二种，通过 v-for 遍历一个方法，将原数组作为参数传入（方法仅会调用一次）：</p>
-      <ul>
-        <li v-for="n of uneven(numbers)">{{ n }}</li>
-      </ul>
+      <span v-for="n of evenNumbers">{{ n + ' ' }}</span>
+      <p>第二种，通过 v-for 遍历一个方法，将原数组作为参数传入（方法仅会调用一次）</p>
+      <span v-for="n of uneven(numbers)">{{ n + ' ' }}</span>
 
       <h1>2. 在 v-for 内使用范围值（整数数值）</h1>
       <p>在此情况下，它会将模板重复对应次数</p>
-      <span v-for="n in 10">{{ n + ' ' }}</span>
+      <span v-for="n in 5">{{ n + ' ' }}</span>
 
       <h1>3. 在 template 上使用 v-for</h1>
-      <p>参考 v-if，v-for 也可以借助 template 来渲染一整块，多个元素内容</p>
+      <p>参考 v-if，v-for 也可以借助 template 来渲染整块多个元素的内容</p>
       <template v-for="n in numbers">
         <button>{{ n }}</button>
         <span>{{ n + ' ' }}</span>
@@ -34,34 +30,32 @@
       </template>
 
       <h1>4. v-for 与 v-if 一同使用</h1>
-      <p>在 v-if 时也简单提到了，不推荐在同一个元素上一起使用，在此我们展开讲讲为什么，顺便演示一下：</p>
+      <p>v-if 挖了坑，现在填一下，展开讲讲为什么？</p>
       <p>
-        当它们处于同一节点时，v-for 的优先级要高于 v-if，意味着 v-if 将分别重复运行在每个 v-for
-        遍历的节点中，如果你的需求是这样，有一个 todo 列表，你想只渲染未完成的 todo 信息，可以这样做：
+        当它们处于同一节点时，v-for 的优先级要高于 v-if（源码中的校验顺序就是 v-for 在前面），意味着 v-if
+        将分别重复运行在每个 v-for 遍历的节点中，如果你的需求是这样，有一个 todo 列表，你想只渲染未完成的 todo
+        信息，可以这样做：
       </p>
       <ul>
-        <li v-for="todo in todoList" v-if="!todo.done">未完成的任务：{{ todo.message }}</li>
+        <li v-for="todo in todoList" v-if="!todo.done">{{ todo.message }}（未完成的任务）</li>
       </ul>
-      <p class="note">
-        显然，这并不够优雅，因为，哪怕是只需要渲染一小部分的数据时，同样需要遍历整个列表，不管列表内的数据是否发生了改变，出现这样的需求时，完全可以把这个操作抽离到一个计算属性中过滤后使用，这样的好处是：
+      <p>
+        显然，这并不够优雅，因为，哪怕是只需要渲染一小部分的数据时，同样需要遍历整个列表，不管列表内的数据是否发生了改变，出现这样的需求时，完全可以把这个操作抽离到一个计算属性中过滤后使用（后面案例就用了），这样的好处是
       </p>
-      <ul>
+      <ul class="note">
         <li>过滤后的列表比原先列表数据更少，渲染更快</li>
         <li>只会在数组发生变更后才重新计算，更加高效</li>
         <li>解耦渲染层逻辑，可维护性（扩展性）更强</li>
       </ul>
 
       <h1>5. 在组件上使用 v-for</h1>
-      <p>在自定义组件上使用，与普通元素使用一样无异，但需要注意的是：</p>
-      <ol class="note">
-        <li>Vue2.2.0+ 版本，在组件上使用 v-for 是，必须要指定 key 值，否则会有 Vue tip</li>
-        <li>
-          数据不会自动注入到组件内部（自动注入会导致组件与 v-for
-          运作紧密耦合，不易后续场合的重复使用），因为组件有自己独立的作用域，我们可以通过组件 prop
-          的方式来将数据传递到组件内
-        </li>
-      </ol>
-      <p>我们下面通过组件与 v-for 来实现一个简单的 todo 列表</p>
+      <p>自定义组件上使用与普通元素一样，需要注意的是：</p>
+      <p>在 Vue2.2.0+ 版本，在组件上使用 v-for，需要写 key 值，否则会有 Vue 提示或者警告</p>
+      <p class="note">
+        数据不会自动注入到组件内部（若自动注入数据会导致组件与 v-for
+        运作紧密耦合，不易后续场合的重复使用），组件有自己独立的作用域，我们可以通过组件 prop 的方式来将数据传递到组件内
+      </p>
+      <h2>5.1 简单的 todo 列表小案例</h2>
       <div id="todo-list-example">
         <!-- .prevent 是阻止表单提交的默认行为，后面会讲到 -->
         <form @submit.prevent="addNewTodo">
@@ -87,11 +81,11 @@
         data: {
           newTodoText: '',
           nextTodoId: 3,
-          numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          numbers: [1, 2, 3, 4, 5, 6, 7, 8],
           todoList: [
-            { id: 1, message: 'Learn Vue', done: false },
-            { id: 2, message: 'Learn JavaScript', done: false },
-            { id: 3, message: 'Learn TypeScript', done: false },
+            { id: 1, message: '学习 Vue', done: false },
+            { id: 2, message: '学习 JavaScript', done: false },
+            { id: 3, message: '学习 TypeScript', done: false },
           ],
         },
         components: {
@@ -121,6 +115,10 @@
             return numbers.filter((number) => (number % 2) - 1 === 0)
           },
           addNewTodo: function () {
+            if (!this.newTodoText) {
+              alert('要输入内容才能添加任务哦~')
+              return
+            }
             this.todoList.push({
               id: ++this.nextTodoId,
               message: this.newTodoText,

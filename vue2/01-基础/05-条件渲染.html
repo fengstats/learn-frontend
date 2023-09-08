@@ -8,15 +8,17 @@
   </head>
   <body>
     <div id="app">
-      <h1 v-if="awesome">1. v-if</h1>
-      <h1 v-else>v-else</h1>
-      <p>v-if 指令用于渲染一整块内容，只有当指令中表达式为 truthy 时才会渲染</p>
+      <h1>1. v-if</h1>
+      <p v-if="awesome">
+        v-if 指令用于渲染一整块内容，只有当指令中表达式为 truthy 时才会渲染，试着打开控制台更改一下 vm.awesome
+      </p>
+      <p v-else>嘻嘻，你发现了彩蛋 🎉</p>
 
       <h2>1.2 在 template 标签中使用 v-if 进行渲染分组</h2>
       <template v-if="awesome">
         <p>因为 v-if 是一个指令的原因，所以必须要将其添加到一个元素上</p>
         <p>如果需要同时切换多个元素，可以将指令添加在 template 标签上作为一个不可见元素，最终将不会被浏览器渲染</p>
-        <p>Vue2.1.0+ v-else-if</p>
+        <p class="note">Vue2.1.0+，支持 v-else-if</p>
       </template>
       <template v-else>
         <p>我是 template 的 v-else</p>
@@ -56,23 +58,18 @@
         使用方式与 v-if 大同小异，但是需要注意的是 v-show 只是单纯的切换元素的 CSS property（display: none 或者
         block）而已
       </p>
-      <p class="note">NOTE: 不支持 template 元素，也没有 v-else</p>
+      <p class="note">但是 v-show 不支持 template 元素，也没有 v-else</p>
 
-      <h1>3. v-if 对比 v-show</h1>
-      <ul>
-        <li>
-          v-if 如何一开始表达式条件为假，则不会渲染任何元素，直到表达式为真时才会渲染，v-show
-          不管初始条件是什么，都会渲染元素，只是渲染之后会根据 CSS 进行切换而已
-        </li>
-        <li>v-if 是真正的 ”条件渲染“，在切换过程中，条件内的事件监听与子组件会适当地进行重建与销毁</li>
-      </ul>
-      <p class="note">
-        总结：v-if 的切换开销高，v-show 的初始渲染开销高，因此，如果需要频繁的切换，选 v-show，否则选 v-if
+      <h1>3. v-if vs v-show</h1>
+      <p>
+        v-if 如何一开始表达式条件为假，则不会渲染任何元素，直到表达式为真时才会渲染，v-show
+        不管初始条件是什么，都会渲染元素，只是渲染之后会根据 CSS 进行切换而已
       </p>
+      <p>v-if 是真正的 ”条件渲染“，在切换过程中，条件内的事件监听与子组件会适当地进行重建与销毁</p>
+      <p class="note">v-if 切换开销高，v-show 初始渲染开销高，所以如果需要频繁的切换，选 v-show，否则选 v-if</p>
 
       <h1>4. v-if 与 v-for 一起使用</h1>
-      <blockquote style="color: #ff4757">不推荐同时使用</blockquote>
-      <p class="note">同时使用时：v-for 优先级更高</p>
+      <p class="warn">不推荐同时使用，若非要同时使用，v-for 优先级更高，到 v-for 时会写个案例看看</p>
     </div>
     <script src="../vue.js"></script>
     <script>

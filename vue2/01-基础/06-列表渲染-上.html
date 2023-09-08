@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../common.css" />
-    <title>列表渲染</title>
+    <title>列表渲染-上</title>
   </head>
   <body>
     <div id="app">
-      <h1>1. 用 v-for 把数组内元素一一渲染</h1>
+      <h1>1. 用 v-for 渲染数组元素</h1>
       <p>
-        v-for 的指令是需要基于一个数组来渲染，通过 `item in items` 的语法，items 是数组名称，item
-        是可以自定义的元素别名，key 我们在条件渲染已经讲过
+        v-for 的指令是需要基于一个数组来渲染，通过 <b>item in items</b> 的语法，items 是数组名称，item
+        是可以自定义的元素别名，key 是 Vue 用于虚拟 DOM 算法对比时用的
       </p>
       <ul>
         <li v-for="item in items" :key="item.message">{{ item.message }}</li>
       </ul>
       <p>
-        在 v-for 内的代码块中，优先访问父作用域的 property（比如这里的 index 在实例中也有定义），同时 v-for
-        还支持第二个参数（当前数组元素的索引值，下标）
+        在 v-for 内的代码块中，优先访问父作用域的 property（比如这里的 index 变量在当前 Vue 实例中也有定义），同时 v-for
+        还支持第二个参数，当前数组元素的索引值（下标）
       </p>
       <ul>
         <li>index: {{ index }}</li>
@@ -26,7 +26,7 @@
       </ul>
       <p class="note">
         你还可以使用 `of` 来替代 `in` 作为遍历分隔符，因为它更接近 JavaScript 迭代器的语法（一般 js 中 for in 是遍历
-        key，而 for of 才是遍历 value），这在 Vue 中没有区别
+        key，而 for of 才是遍历 value），在 Vue 中没有什么区别，但我一般没怎么见过别人在 Vue 中遍历用 of 的。
       </p>
       <ul>
         <li v-for="(item, index) of items">{{ index + 1 }}. {{ item.message }}</li>
@@ -38,7 +38,7 @@
       </ul>
       <p>v-for 遍历对象时第一个参数为对象内 property 的值，第二个参数为 key，第三个参数为下标</p>
       <p class="note">
-        在遍历对象时，会按照 `Object.keys()` 的结果遍历，但不恩纳给保证它的结果在不同的 JavaScript 引擎下都保持一致
+        在遍历对象时，会按照 `Object.keys()` 的结果遍历，但不能保证它的结果在不同的 JavaScript 引擎下都保持一致
       </p>
 
       <h1>3. 维护状态（key 的妙用）</h1>
@@ -50,12 +50,11 @@
       </p>
       <p>
         在使用 v-for 时，除非遍历的内容很简单，或者你是刻意依赖默认行为来得到性能上的提升，否则尽可能的提供一个唯一的
-        key attribute，一般在你进行更新数组时的得到一些性能优化
+        key attribute，这能让你在更新数组时得到些性能优化
       </p>
-      <p class="note">
-        注意不要使用对象或数组这种非基本数据类型值作为 key 的 value，请使用字符串与数值类型的值，更多 key attribute
-        请参考：
-        <a href="https://v2.cn.vuejs.org/v2/api/#key" target="_blank">key 的 API 文档</a>
+      <p class="warn">
+        注意不要使用对象或数组这种非基本数据类型值作为 key 的值，请使用字符串与数值类型的值， 请参考：
+        <a href="https://v2.cn.vuejs.org/v2/api/#key" target="_blank">key API</a>
       </p>
       <ul>
         <li v-for="item of items" :key="item.id">{{ item.message }}</li>
@@ -66,7 +65,9 @@
       <ul>
         <li v-for="methodName of updateMethods">{{ methodName}}</li>
       </ul>
-      <p class="note">你可以打开控制台（F12），自己来试试上面这些方法，比如 vm.updateMethods.push('new()')</p>
+      <p class="note">
+        打开控制台（F12），自己来试试上面这些方法是否会触发视图更新，比如 vm.updateMethods.push('new()')
+      </p>
       <h2>4.2 替换数组（返回新数组，非变更方法）</h2>
       <ul>
         <li v-for="methodName of notUpdateMethods">{{ methodName}}</li>
@@ -74,7 +75,7 @@
       <p>vm.noteUpdateMethods = vm.notUpdateMethods.filter((item) => item == 'concat()')</p>
       <p>
         通过上面的方式替换数组并不会丢弃掉现有 DOM
-        并重新渲染整个列表，而是会用一个含有相同元素的数组区替换原有数组，所以还是很高效
+        并重新渲染整个列表，而是会用一个含有相同元素的数组区替换原有数组，所以还高效的
       </p>
     </div>
     <script src="../vue.js"></script>

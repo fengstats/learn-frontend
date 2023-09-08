@@ -1,6 +1,14 @@
+body {
+  padding: 12px;
+}
+
 #app {
   padding-bottom: 500px;
 }
 .note {
   color: #16a085;
+}
+.warn {
+  /* color: #ee7931; */
+  color: #ff4757;
 }

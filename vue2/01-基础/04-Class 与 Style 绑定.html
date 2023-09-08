@@ -17,11 +17,14 @@
     </style>
   </head>
   <body>
-    <!-- 通过 v-bind 来动态给 class 和 style（内联样式）做数据绑定，Vue 在这一块专门做了增强，表达式的结果除了字符串以外，还可以是对象或者数组 -->
     <div id="app">
       <h1>1. 绑定 HTML Class</h1>
+      <p>
+        通过 v-bind 来动态给 class 和 style（内联样式）做数据绑定，Vue
+        在这一块专门做了增强，表达式的结果除了字符串以外，还可以是对象或者数组
+      </p>
       <h2 :class="className">1.1. 对象语法</h2>
-      <!-- :class 也可以与普通的 class attribute 共存 -->
+      <p>:class 也可以与普通的 class attribute 共存</p>
       <p class="other" :class="classObject">
         当需要绑定的 HTML Class 有一定复杂度的表达式计算时，通常情况下是直接绑定一个返回对象的计算属性
       </p>
