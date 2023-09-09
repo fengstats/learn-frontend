@@ -1,3 +1,3 @@
-## 学学前端叭！ 👀
+## 教小峰峰一点前端
 
 PUT FIRST THINGS FIRST!

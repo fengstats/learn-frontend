@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../common.css" />
+    <title>事件处理</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>1. 监听事件</h1>
+      <p>v-on 和语法糖 `@` 效果是一样的，前面提过，这里简单用一下：</p>
+      <p>counter: {{ counter }}</p>
+      <button v-on:click="counter += 1">counter++</button>
+      <button @click="counter += 1">counter++</button>
+
+      <h1>2. 事件处理方法</h1>
+      <p>
+        如果事件处理的逻辑比较复杂的，一般不会在 v-on 指令模板中写 JavaScript 表达式，而是接收一个实例中的 methods
+        方法来处理
+      </p>
+      <button @click="tipMessage">点我看看</button>
+
+      <h1>3. 事件传参</h1>
+      <p>
+        调用方法时传点参数过去，不过这样就拿不到 event 这个 DOM 原生事件了，嘿嘿，Vue 支持你使用特殊变量 `$event`
+        将原生事件传入方法，我们来试试行不行
+      </p>
+      <button @click="say('你好', $event)">说你好</button>
+
+      <h1>4. 事件修饰符</h1>
+      <p>
+        这个前面简单使用过，这里说下原因顺便介绍一下：在以前原生 JS 处理 DOM 事件的时候，比如阻止事件冒泡
+        `event.stopPropagation`，阻止事件默认行为
+        `event.preventDefault`，这些都是比较常见的需求，但是不优雅，更好的方式应该是在方法中就只有纯粹的数据逻辑，而不是夹杂处理
+        DOM 的事件细节，所以 Vue 为了解决这个问题，给 v-on 提供了一个叫事件修饰符的东西，由 `.` 开头的指令后缀表示，如：
+      </p>
+      <ul>
+        <li v-for="(value, key) in eventModifiers">{{ key }}：{{ value }}</li>
+      </ul>
+      <p class="note">
+        修饰符可以串联使用，比如 @click.self.prevent 可以阻止自身元素的点击，记住顺序很重要，先 self 再 prevent，如果先
+        prevent 再 self 那么将会阻止当前元素内所有元素点击
+      </p>
+      <div @click.capture="say('div capture')">
+        <button @click="say('button')">capture 点击测试</button>
+      </div>
+      <p class="note">
+        一般情况下，是需要到冒泡阶段才处理事件的，流程就是 `button` > `div` 但是 .capture
+        这里会直接使用事件捕获模式，导致结果变成 `div` > `button` 了
+      </p>
+      <div @click.self="say('div self')">
+        <button>self 点击测试（点我肯定是没用给的啦，试试点点旁边 div 留白部分）</button>
+      </div>
+      <div
+        @scroll.passive="handleScroll"
+        style="margin-top: 20px; height: 100px; background-color: #ccc; overflow: auto"
+      >
+        <p style="height: 500px">passive 滚动测试</p>
+      </div>
+
+      <h1>5. 按键修饰符</h1>
+      <p>监听键盘事件时，Vue 允许用户添加按键修饰符，来更精确的控制按键行为，比如下面这个按键别名：</p>
+      <ul>
+        <li v-for="(value, key) in keyboardEventModifiers">{{ key }}: {{ value }}</li>
+      </ul>
+      <input @keyup.enter="say($event.target.value)" placeholder="回车试试" />
+      <input @keyup.space="say($event.target.value)" placeholder="空格试试" />
+      <p class="note">如果发现某个按键没有效果，试试把你的浏览器关于键盘映射的插件关掉，比如：Vimium-C</p>
+      <input @keydown="say($event.target.value)" placeholder="ESC 试试" />
+      <h2>5.1 keyCode（按键码）</h2>
+      <p class="warn">
+        注意：`keyCode` 事件用法已经被废弃了并可能不会被最新的浏览器支持，推荐使用 `key` 或者 `code` 代替。
+        <a href="https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/">张鑫旭 - 参考文章</a>
+      </p>
+      <p>使用 keyCode attribute 的方式</p>
+      <input @keyup.65="say($event.target.value)" placeholder="输入 a 试试" />
+      <h2>5.2 key（按键）</h2>
+      <p>
+        你可以直接将
+        <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/UI_Events/Keyboard_event_key_values#navigation_keys"
+          >KeyboardEvent.key</a
+        >
+        中暴露的任意有效按键名转换为 kebab-case（短横线） 格式。
+      </p>
+      <input @keyup.arrow-up="say($event.target.value)" placeholder="按上箭头试试" />
+      <h2>5.3 自定义按键修饰符别名</h2>
+      <p>通过全局 config.keyCodes 自定义，如 Vue.config.keyCodes.f1 = 112</p>
+
+      <h1>6. 系统修饰符</h1>
+      <ul>
+        <li v-for="(value, key) in systemModifiers">{{ key }}：{{ value }}</li>
+      </ul>
+      <h2>6.1 基础修饰符测试</h2>
+      <p class="warn">
+        修试键与常规按键不同，在和 keyup 事件一起用时，事件触发的修试键必须处于按下状态，比如 keyup.alt 只有在按住 alt
+        并同时按下其他按键才能触发，如果你想要单单触发只触发 alt，可以替换为 keyCode: keyup.18。
+      </p>
+      <div>Alt：<input @keyup.18="say('alt')" /></div>
+      <!-- TODO: 使用 code 转换的 kebab-case 形式使用貌似不行 -->
+      <!-- <div>AltLeft：<input @keyup.alt-left="say('触发了左边的 alt')" /></div> -->
+      <div>Alt + 任意键：<input @keyup.alt="say('恭喜你触发了 alt 修试键')" /></div>
+      <div>Alt + C（这里用的是 keyCode，我尝试使用 key 代替，结果不行）：<input @keyup.alt.67="say('Alt + C')" /></div>
+      <h2>6.2 .exact 修饰符</h2>
+      <p>Vue2.5.0+，允许你更精确的控制系统修饰符组件触发的事件</p>
+      <p>比如下面这个例子：即使 Alt 或者 Shift 一起被按下时也触发</p>
+      <button @click.ctrl="say('click ctrl')">按下 ctrl 然后点我（Mac 下有点问题，会变成右键点击从而无法触发）</button>
+      <button @click.shift.exact="say('click shift')">只有按下 shift 然后点我才能触发</button>
+      <h2>6.3 鼠标按扭修饰符</h2>
+      <ul>
+        <li v-for="(value, key) in mouseButtonModifiers">{{ key }}：{{ value }}</li>
+      </ul>
+
+      <h1>7. 为什么在 HTML 中监听事件？</h1>
+      <p>
+        这种监听方式虽然违背了关注点分离（separation of concern），但因为所有的事件处理方法或者表达式都严格绑定在
+        ViewModel 上，所以不会导致维护上的困难，实际上使用 v-on 的事件绑定还有几个好处：
+      </p>
+      <p>1. 扫一眼模板代码便能知道 JS 中对应的处理方法</p>
+      <p>2. 无需在 JS 代码中手动绑定事件，你的 ViewModel 代码可以纯粹的逻辑处理，与 DOM 解耦，更易于测试</p>
+      <p>3. 当一个 ViewModel 被销毁时，同样它所绑定的事件处理器都会被自动删除，无需有额外的心智负担</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          counter: 0,
+          eventModifiers: {
+            '.stop': '阻止事件向上继续传播（俗称事件冒泡，像水里的气泡一样）',
+            '.prevent': '阻止默认事件触发（比如表单提交后页面的重载）',
+            '.capture': '使用事件捕获模式（从 Window 开始往下找目标元素）',
+            '.self': '只有 event.target 为目标元素时（比如点击事件，就是你点的元素）才触发事件',
+            '.once': 'Vue2.1.4+，事件只会被触发一次',
+            '.passive':
+              'Vue2.3.0+，用于优化移动端滚动事件性能，不阻止默认事件触发（preventDefault()），滚动事件的默认行为会立即触发，不要和 .prevent 一起使用，.prevent 会被忽略，同时浏览器可能会给你一个警告',
+          },
+          keyboardEventModifiers: {
+            '.enter': '回车',
+            '.space': '空格',
+            '.left': '左箭头',
+            '.right': '右箭头',
+            '.up': '上箭头',
+            '.down': '下箭头',
+            '.tab': 'Tab 键',
+            '.esc': 'Esc 键',
+            '.delete': '删除键或者退格键',
+          },
+          systemModifiers: {
+            '.ctrl': 'Ctrl 键',
+            '.alt': 'Alt 键',
+            '.shift': 'Shift 键',
+            '.meta': 'Meta 键（Mac 中的 command 键，Win 中的 win 键）',
+          },
+          mouseButtonModifiers: {
+            '.left': '鼠标左键',
+            '.middle': '鼠标中键',
+            '.right': '鼠标右键',
+          },
+        },
+        mounted() {
+          // document.addEventListener('keydown', (event) => {
+          //   console.log(event)
+          // })
+        },
+        methods: {
+          tipMessage: function (event) {
+            alert('你好 Vue2！消息来自于「' + event.target.tagName + '」点击')
+          },
+          say: function (msg, event) {
+            if (event) {
+              alert(`${msg}，消息来自于「${event.target.tagName}」点击`)
+            }
+            alert(msg)
+          },
+          handleScroll: function (event) {
+            console.log('scroll', this.counter++)
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
