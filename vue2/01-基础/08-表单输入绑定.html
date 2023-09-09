@@ -91,7 +91,27 @@
       <p>值为：{{ selected2 }}</p>
 
       <h1>3. 修饰符</h1>
+      <h2>3.1 .lazy</h2>
+      <p>
+        将 v-model 默认触发的 input 事件（用户每次输入时触发）更改为 change 事件（用户输入完并离开输入框焦点时触发）
+      </p>
+      <input v-model.lazy="msg" />
+      <p>值：{{ msg }}</p>
+      <h2>3.2 .number</h2>
+      <p>可以自动将用户的输入转换为数值类型，即使在 type=number 的情况下，也总会返回字符串</p>
+      <input type="number" v-model.number="age" />
+      <p>值：{{ age }}</p>
+      <p>类型：{{ typeof age }}</p>
+      <h2>3.3 .trim</h2>
+      <p>过滤首尾空白字符</p>
+      <input v-model="msg" placeholder="原始" />
+      <input v-model.trim="msg" placeholder="带有 trim 效果" />
+      <p>值："{{ msg }}"</p>
       <h1>4. 在组件上使用 v-model</h1>
+      <p>
+        Vue 的组件系统允许你创建具有完全自定义行为且可复用的输入组件，这些组件甚至能和 v-model
+        一起使用，让我们等到深入了解组件的时候再来填坑。
+      </p>
     </div>
     <script src="../vue.js"></script>
     <script>
@@ -118,6 +138,7 @@
           pick: '',
           pickChecked: '我是 pick 选中的值',
           selected2: '',
+          age: 0,
         },
       })
     </script>
