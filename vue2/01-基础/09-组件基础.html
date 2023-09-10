@@ -99,10 +99,16 @@
       <p>通过 arguments 接收一个伪数组参数列表，会接收所有 $emit 传递的参数</p>
       <cpn2 @give="say(arguments)"></cpn2>
       <h2>6.4 在组件上使用 v-model</h2>
-      <p>填坑！当我们将 v-model 用于组件上，相当于给组件绑定了一个 :value="xxx" 一个事件 :input="xxx = $event"</p>
-      <p>为了能让组件正常工作，我们必须写点东西在组件内部：</p>
-      <p>1. 将 value attribute 绑定到组件内部的 value prop 上</p>
-      <p>2. 组件 input 事件触发后，将新值通过自定义的 input 事件抛出来</p>
+      <p class="note">
+        填坑！当我们将 v-model 用于组件上，相当于给组件绑定了两个东西
+        <br />
+        :value="xxx"
+        <br />
+        @input="xxx = $event"
+      </p>
+      <p>所以为了能让组件正常工作，必须加点东西到组件内部：</p>
+      <p>1. 将 value 属性绑定到组件内部的 prop 的 value 上</p>
+      <p>2. 组件 input 事件触发后，通过 $emit 将 input 事件和新值抛出来</p>
       <cpn3 v-model="cpn3Value" placeholder="随便写点东西试试"></cpn3>
       <p>值：{{ cpn3Value }}</p>
 
@@ -122,13 +128,33 @@
 
       <button
         v-for="tab in tabs"
-        :key="tab.id"
+        :key="tab.name"
         :class="['tab-button', { 'tab-active': currentTab === tab  } ]"
         @click="currentTab = tab"
       >
         {{ tab.name }}
       </button>
       <component :is="currentTab.component"></component>
+
+      <h1>9. 解析 DOM 模板时的注意事项</h1>
+      <p>
+        像 ul、ol、table 和 select 这一类 HTML 元素，对于哪些元素可以出现在其内部有严格限制，比如 li、tr 和
+        option，这就会导致我们在使用这些有约束条件的元素时遇到一些问题，比如：在 table
+        里面放一个自定义组件，尽管这个组件的 template 是 tr
+        标签为根节点的内容，但还是会被浏览器当作无效内容给提升到外部，并导致最终的渲染结果出现异常。
+      </p>
+      <p class="note">
+        不过不必过度担心，此时特殊的 is 属性给我们提供了一个变通的方法，可以直接在 table 内写一个 tr
+        标签，并将自定义组件通过 is 来 传递，这样就能绕过这个限制实现效果。
+      </p>
+      <table style="border: 1px solid #ccc">
+        <!-- <tr-row></tr-row> -->
+        <tr is="tr-row"></tr>
+      </table>
+      <p class="note">注意：<strong>如果我们是在以下条件中使用模板那的话，则没有上面说的限制</strong></p>
+      <p>1. 字符串模板内（如：template: '...'）</p>
+      <p>2. .vue 文件中</p>
+      <p>3. 设置了 type="text/x-template" 的 script 标签中</p>
     </div>
     <script src="../vue.js"></script>
     <script>
@@ -226,6 +252,15 @@
                 <strong>错误：</strong>
                 <slot></slot>
               </div>
+            `,
+          },
+          'tr-row': {
+            template: `
+              <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+              </tr>
             `,
           },
         },
