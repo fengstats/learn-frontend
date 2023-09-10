@@ -10,6 +10,20 @@
         padding: 10px;
         border: 1px solid #ccc;
       }
+      .tab-button {
+        padding: 6px 10px;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        background: #f0f0f0;
+        margin-bottom: -1px;
+        margin-right: -1px;
+      }
+      .tab-button:hover,
+      .tab-active {
+        color: #2980b9;
+      }
     </style>
   </head>
   <body>
@@ -99,6 +113,22 @@
       </p>
       <alert-box>这里可以传递一些内容</alert-box>
       <p>插槽还有很多用法，我们先点到为止，后面展开聊聊</p>
+
+      <h1>8. 动态组件</h1>
+      <p>
+        在不同组件之间进行动态切换，我们可以通过 Vue 的 component 元素加上 is 这个属性来实现，is
+        接收两种类型参数，第一种是已经注册过的组件名，第二种就是一个组件选项对象，这里我们选择第二种，并加上一个选项卡案例做演示：
+      </p>
+
+      <button
+        v-for="tab in tabs"
+        :key="tab.id"
+        :class="['tab-button', { 'tab-active': currentTab === tab  } ]"
+        @click="currentTab = tab"
+      >
+        {{ tab.name }}
+      </button>
+      <component :is="currentTab.component"></component>
     </div>
     <script src="../vue.js"></script>
     <script>
@@ -120,6 +150,29 @@
       //   data: { count: 0 },
       //   template,
       // })
+      const tabs = [
+        {
+          id: 1,
+          name: '首页',
+          component: {
+            template: `<div class="blog-post">这是首页的组件内容</div>`,
+          },
+        },
+        {
+          id: 2,
+          name: '关于',
+          component: {
+            template: `<div class="blog-post">这是关于的组件内容</div>`,
+          },
+        },
+        {
+          id: 3,
+          name: '联系我',
+          component: {
+            template: `<div class="blog-post">这是联系我的组件内容</div>`,
+          },
+        },
+      ]
 
       const vm = new Vue({
         el: '#app',
@@ -131,6 +184,8 @@
             { id: 3, title: 'hello, husky' },
           ],
           cpn3Value: '',
+          tabs,
+          currentTab: tabs[0],
         },
         components: {
           // 组件名: 组件对象
@@ -173,6 +228,14 @@
               </div>
             `,
           },
+        },
+        computed: {
+          // NOTE: 这里有更简单的写法，不存储 tabId 而是直接存储 tab，这样练计算属性都省了
+          // currentCpn() {
+          //   const index = this.tabs.findIndex((tab) => tab.id === this.currentTabId)
+          //   if (index === -1) return {}
+          //   return this.tabs[index].component
+          // },
         },
         methods: {
           say(...args) {
