@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../common.css" />
+    <title>组件基础</title>
+    <style>
+      .blog-post {
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>1. 基础示例</h1>
+      <p>
+        这是全局注册的计数器组件，它们与 new Vue 接收同样的选项，例如 data、computed、watch、methods
+        以及生命周期钩子等，除了 el 是根实例特有的选项
+      </p>
+      <button-counter></button-counter>
+
+      <h1>2. 组件的复用</h1>
+      <p>
+        组件是可以任意复用的，注意点击按扭时，你可以看到每个组件都在维护属于它自己的 data
+        数据，因为你每使用一次都会有一个新的组件实例被创建
+      </p>
+      <button-counter></button-counter>
+      <button-counter></button-counter>
+      <button-counter></button-counter>
+      <h2>2.1 data 为什么必须是一个函数？</h2>
+      <p class="note">
+        你可能发现了，我们在注册这个组件的时候，给 data 传递的值并不像 new Vue
+        一样直接是一个对象，而是函数返回对象的形式，如果你的 JS
+        基础还可以，那应该能理解对象的引用传递特性，所以这里必须使用函数创建一个新的作用域空间，返回一个新的对象的拷贝，这样每次组件实例创建时，data
+        才能做到数据隔离，互不影响，否则就会出现多个组件共用同个 data 的现象，组件的数据维护会变得很混乱。
+      </p>
+
+      <h1>3. 组件的组织</h1>
+      <p>一个应用通常会以一颗嵌套的组件树形式来组织</p>
+      <p>
+        组件注册分为了 “全局注册” 和 “局部注册”，至此，我们的组件都是通过 Vue.component 全局注册的，注册之后任何通过 new
+        Vue 新创建的 Vue 根实例都能在模板中直接使用，包括其组件树下的所有子组件模板中也能使用
+      </p>
+
+      <h1>4. 通过 prop 给子组件传递数据</h1>
+      <h2>4.1 基础使用</h2>
+      <p>
+        在列表渲染的部分简单使用过，这里我们展开聊聊，<b>prop 传递是什么意思呢？</b>
+        其实就是你可以在已经注册的组件上自定义一些 attribute（属性），当一个值传递给一个 prop attribute
+        时，它就变成了这个组件实例的一个 property，可以在组件内使用 props 选项设置可接收的 prop
+        列表（这里我们选择局部注册的方式，在实例的 components 选项上注册）
+      </p>
+      <blog-post title="你好呀，Vue2"></blog-post>
+      <blog-post title="你好呀，Vue3"></blog-post>
+      <blog-post title="你好呀，React"></blog-post>
+      <h2>4.2 动态渲染组件</h2>
+      <blog-post v-for="post in posts" :key="post.id" :title="post.title"></blog-post>
+
+      <h1>5. 单个根元素</h1>
+      <p class="warn">
+        如果在组件内的 template 中有多个根元素，Vue
+        会显示一个错误，你需要将模板的内容包裹在一个父元素内，来解决这个问题，这个是 Vue
+        的规则，遵守就好，这里就不演示了
+      </p>
+
+      <h1>6. 监听子组件事件</h1>
+      <h2>6.1 v-on 和 $emit 配合来做些事情</h2>
+      <p>
+        如果我们希望子组件能和父组件之间进行通讯功能，比如我们希望父组件放大字号，此时我们需要给子组件绑定一个事件（v-on
+        放大字号），然后在子组件内触发事件（$emit），来写一下：
+      </p>
+      <div :style="{ fontSize: blogFontSize + 'em' }">
+        <new-blog-post :post="{ title: '原神，启动！'}" @enlarge-text="blogFontSize += 0.1"></new-blog-post>
+      </div>
+      <h2>6.2 $emit 传递一个值，使用 $event 接收</h2>
+      <cpn1 @enlarge="blogFontSize = $event"></cpn1>
+      <h2>6.3 $event</h2>
+      <p>
+        只写方法名时，$event
+        会自动作为第一个参数传入方法，如果有多个参数，还可以继续在父组件的方法上使用形参接收，不过一般如果要传递多个参数，直接传对象或者数组会更加方便
+      </p>
+      <cpn2 @give="say"></cpn2>
+      <p>通过 arguments 接收一个伪数组参数列表，会接收所有 $emit 传递的参数</p>
+      <cpn2 @give="say(arguments)"></cpn2>
+      <h2>6.4 在组件上使用 v-model</h2>
+      <p>填坑！当我们将 v-model 用于组件上，相当于给组件绑定了一个 :value="xxx" 一个事件 :input="xxx = $event"</p>
+      <p>为了能让组件正常工作，我们必须写点东西在组件内部：</p>
+      <p>1. 将 value attribute 绑定到组件内部的 value prop 上</p>
+      <p>2. 组件 input 事件触发后，将新值通过自定义的 input 事件抛出来</p>
+      <cpn3 v-model="cpn3Value" placeholder="随便写点东西试试"></cpn3>
+      <p>值：{{ cpn3Value }}</p>
+
+      <h1>7. 简单的插槽 slot</h1>
+      <p>
+        有时候我们可能想跟 HTML 元素一样给组件传递一些内容，这时候可以在组件内使用 slot
+        标签进行占位，然后在使用组件标签时，组件的内容会自动填充到这个 slot 标签的位置
+      </p>
+      <alert-box>这里可以传递一些内容</alert-box>
+      <p>插槽还有很多用法，我们先点到为止，后面展开聊聊</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      const template = `
+        <div>
+          <button @click="count++">计数器，点我 +1，当前：{{ count }}</button>
+        </div>
+      `
+
+      Vue.component('button-counter', {
+        data: function () {
+          return { count: 0 }
+        },
+        template,
+      })
+
+      // 在组件中定义 data 为一个对象时，会有 Vue Warn 信息，且数据无法正常使用
+      // Vue.component('button-counter2', {
+      //   data: { count: 0 },
+      //   template,
+      // })
+
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          blogFontSize: 1,
+          posts: [
+            { id: 1, title: 'hello, TypeScript' },
+            { id: 2, title: 'hello, ESlint' },
+            { id: 3, title: 'hello, husky' },
+          ],
+          cpn3Value: '',
+        },
+        components: {
+          // 组件名: 组件对象
+          'blog-post': {
+            props: ['title'],
+            template: `
+              <h3 class="blog-post">{{ title }}</h3>
+            `,
+          },
+          'new-blog-post': {
+            props: ['post'],
+            template: `
+              <div class="blog-post">
+                <h3>{{ post.title }}</h3>
+                <button @click="$emit('enlarge-text')">点我放大</button>
+              </div>
+            `,
+          },
+          cpn1: {
+            template: `<button @click="$emit('enlarge', 2)">放大到 2 倍</button>`,
+          },
+          cpn2: {
+            template: `<button @click="$emit('give', 3, 1, 2, 4)">给你几个参数</button>`,
+          },
+          cpn3: {
+            props: ['value', 'placeholder'],
+            template: `
+              <input
+                :value="value"
+                :placeholder="placeholder"
+                @input="$emit('input', $event.target.value)"
+              >
+            `,
+          },
+          'alert-box': {
+            template: `
+              <div :style="{ padding: '10px', border: '1px solid #f00'}" >
+                <strong>错误：</strong>
+                <slot></slot>
+              </div>
+            `,
+          },
+        },
+        methods: {
+          say(...args) {
+            if (typeof args[0] === 'object') {
+              // NOTE: 伪数组（类数组）对象 arguments，是可以被 for of 遍历的
+              alert('arguments：' + JSON.stringify(args[0]))
+              return
+            }
+            // 正常传参
+            let res = ''
+            for (const [i, value] of args.entries()) {
+              res += `param${i + 1}：${value}\n`
+            }
+            alert(res)
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
