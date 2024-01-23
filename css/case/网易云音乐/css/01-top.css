@@ -1,0 +1,117 @@
+.top {
+  background-color: #242424;
+}
+.top .topbar {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  line-height: 70px;
+}
+.top .topbar .bar-left {
+  display: flex;
+  color: #ccc;
+}
+.top .topbar .bar-left .logo {
+  width: 176px;
+  background: url(../images/topbar.png) 0 0;
+}
+.top .topbar .bar-left .logo a {
+  display: block;
+  text-indent: -99999px;
+}
+.top .topbar .bar-left .list {
+  display: flex;
+}
+.top .topbar .bar-left .list .item {
+  display: block;
+  position: relative;
+  padding: 0 19px;
+  color: #ccc;
+  font-size: 14px;
+}
+.top .topbar .bar-left .list .item.active,
+.top .topbar .bar-left .list .item:hover {
+  color: #fff;
+  background-color: #000;
+}
+.top .topbar .bar-left .list .item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 12px;
+  height: 7px;
+  background: url(../images/topbar.png) -105px -70px/120px auto;
+}
+.top .topbar .bar-left .list .item.hot::after {
+  position: absolute;
+  top: 21px;
+  left: 100px;
+}
+.top .topbar .bar-right {
+  display: flex;
+  align-items: center;
+  padding-right: 22px;
+}
+.top .topbar .bar-right .item {
+  height: 32px;
+  line-height: 32px;
+}
+.top .topbar .bar-right .search {
+  display: flex;
+  align-items: center;
+  width: 158px;
+  padding-left: 26px;
+  box-sizing: border-box;
+  border-radius: 32px;
+  background: url(../images/topbar.png) 0 -99px;
+  background-color: #fff;
+}
+.top .topbar .bar-right .search input {
+  width: 112px;
+  font-size: 12px;
+}
+.top .topbar .bar-right .author {
+  width: 90px;
+  margin: 0 15px;
+  border: 1px solid #4f4f4f;
+  border-radius: 20px;
+  color: #ccc;
+  text-align: center;
+}
+.top .topbar .bar-right .author:hover {
+  color: #fff;
+  border-color: #fff;
+}
+.top .topbar .bar-right .login {
+  color: #888;
+}
+.top .topbar .bar-right .login:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+.nav {
+  height: 35px;
+  background-color: #c20c0c;
+}
+.nav .navbar {
+  padding-left: 180px;
+  box-sizing: border-box;
+}
+.nav .navbar .list {
+  display: flex;
+  align-items: center;
+  height: 34px;
+}
+.nav .navbar .list .item {
+  margin: 0 17px;
+  padding: 2px 12px;
+  font-size: 12px;
+  color: #fff;
+}
+.nav .navbar .list .active {
+  border-radius: 10px;
+  background-color: #0000002f;
+}

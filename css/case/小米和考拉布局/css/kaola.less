@@ -1,0 +1,90 @@
+.header {
+  line-height: 58px;
+  .left-title {
+    float: left;
+    h2 {
+      float: left;
+      font-size: 18px;
+    }
+    .trending-word {
+      float: left;
+      font-size: 12px;
+      color: #aaa;
+      .item {
+        margin-left: 12px;
+      }
+    }
+    .active {
+      color: #ff3f34;
+    }
+  }
+  .right-detail {
+    float: right;
+    font-size: 14px;
+    a {
+      color: #aaa;
+    }
+  }
+}
+
+.list {
+  .item {
+    height: 401px;
+    float: left;
+  }
+  .border-item {
+    border: 1px solid #333;
+    border-left: none;
+  }
+  .left {
+    position: relative;
+    width: 250px;
+    // background-color: #ff7675;
+    border: 1px solid #333;
+    box-sizing: border-box;
+    .type-promotion {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 180px;
+      height: 100px;
+      border: 1px solid #333;
+    }
+  }
+  .center {
+    width: 400px;
+    // background-color: #7ed6df;
+    .c-item {
+      float: left;
+      width: 200px;
+      height: 201px;
+      box-sizing: border-box;
+      // 选择后面的两个元素 margin-top 设置负值盖掉前面的元素
+      &:nth-last-child(-n + 2) {
+        margin-top: -1px;
+      }
+    }
+  }
+  .right {
+    width: 200px;
+    // background-color: #00b894;
+    .r-title {
+      height: 50px;
+      line-height: 50px;
+      h2 {
+        font-size: 16px;
+      }
+      box-sizing: border-box;
+    }
+    .hot-item {
+      height: 89px;
+      margin-top: -1px;
+      box-sizing: border-box;
+      &:nth-last-child(1) {
+        height: 88px;
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+.header {
+  line-height: 58px;
+}
+.header .left-title {
+  float: left;
+}
+.header .left-title h2 {
+  float: left;
+  font-size: 18px;
+}
+.header .left-title .trending-word {
+  float: left;
+  font-size: 12px;
+  color: #aaa;
+}
+.header .left-title .trending-word .item {
+  margin-left: 12px;
+}
+.header .left-title .active {
+  color: #ff3f34;
+}
+.header .right-detail {
+  float: right;
+  font-size: 14px;
+}
+.header .right-detail a {
+  color: #aaa;
+}
+.list .item {
+  height: 401px;
+  float: left;
+}
+.list .border-item {
+  border: 1px solid #333;
+  border-left: none;
+}
+.list .left {
+  position: relative;
+  width: 250px;
+  border: 1px solid #333;
+  box-sizing: border-box;
+}
+.list .left .type-promotion {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 180px;
+  height: 100px;
+  border: 1px solid #333;
+}
+.list .center {
+  width: 400px;
+}
+.list .center .c-item {
+  float: left;
+  width: 200px;
+  height: 201px;
+  box-sizing: border-box;
+}
+.list .center .c-item:nth-last-child(-n + 2) {
+  margin-top: -1px;
+}
+.list .right {
+  width: 200px;
+}
+.list .right .r-title {
+  height: 50px;
+  line-height: 50px;
+  box-sizing: border-box;
+}
+.list .right .r-title h2 {
+  font-size: 16px;
+}
+.list .right .hot-item {
+  height: 89px;
+  margin-top: -1px;
+  box-sizing: border-box;
+}
+.list .right .hot-item:nth-last-child(1) {
+  height: 88px;
+}

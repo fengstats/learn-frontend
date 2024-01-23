@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flex</title>
+    <style>
+      * {
+        /* box-sizing: border-box; */
+        padding: 0;
+        margin: 0;
+      }
+
+      .box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        /* justify-content: space-evenly; */
+        /* align-content: space-evenly; */
+        /* align-items: center; */
+        width: 640px;
+        height: 340px;
+        margin: 0 auto;
+        border: 1px solid #000;
+      }
+
+      .box .item {
+        /* flex: 1; */
+        width: 200px;
+        border-right: 2px solid #000;
+        height: 100px;
+        color: #fff;
+        background-color: green;
+      }
+    </style>
+    <style>
+      .box2 {
+        display: flex;
+        margin: 20px auto;
+        width: 400px;
+        /* height: 200px; */
+        background-color: #dfe4ea;
+      }
+
+      .box2 .item1 {
+        width: 200px;
+        height: 200px;
+        background-color: #16a085;
+      }
+
+      .box2 .item2 {
+        flex: 1;
+        /* 让里面的两个p标签垂直居中  */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        /* padding: 50px 0; */
+        border: 1px solid #000;
+      }
+      /* .box2 .item2 p {
+        margin: 10px 0;
+      } */
+    </style>
+    <style>
+      .box3 {
+        display: flex;
+        width: 400px;
+        height: 50px;
+        line-height: 50px;
+        /* justify-content: space-between; */
+        /* align-items: center; */
+        margin: 0 auto;
+        background-color: #ccc;
+      }
+      .box3 .item {
+        flex: 1;
+        /* 下面三个值的缩写属性 */
+        /* flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 0; */
+        /* 1. 在 flex container 中 align-items 默认值为 normal */
+        /* 2. 在 flexbox 布局中的这里的 normal 又对应 stretch, 所以 flex cross axis 会被自动拉伸与填充  */
+        /* 在这种情况下如果去设置一个固定 size, flex align-items 作用就失效了, 回归 content-box 布局 */
+        /* height: 46px;
+        line-height: 46px; */
+        text-align: center;
+        color: #999;
+        /* background-color: green; */
+        cursor: pointer;
+        transition: border 0.2s linear;
+      }
+      .box3 .line {
+        /* 通过定位垂直居中 */
+        /* position: relative;
+        top: 0;
+        bottom: 0;
+        margin: auto 0; */
+        /* 通过 flex cross axis 设置居中 */
+        align-self: center;
+        width: 2px;
+        height: 40px;
+        background-color: #2c3e50;
+      }
+      .box3 .item a {
+        color: #999;
+        text-decoration: none;
+        /* 宽度是块级元素自动填满的, 高度是通过继承的 line-height 填充的 */
+        display: block;
+        /* 因为我们的 border-bottom 是给到 item 的, 如果高度全部被 a 占满就看不到了, 所以留点空间显示, 或者全部换成 a 来显示, 就可以把 border-bottom 给到 a 元素了 */
+        line-height: 46px;
+        background-color: #f0f0f0;
+      }
+      .box3 .item:hover {
+        color: #333;
+        border-bottom: 4px solid #ff7f50;
+      }
+
+      .box4 {
+        display: flex;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 20px;
+        background-color: #ccc;
+      }
+      .box4 .item {
+        /* width: 200px; */
+        /* 在 flexbox 布局中，即使子元素设置的宽高超过了父元素也不会出现溢出的情况 */
+        /* 因为 flex-shrink 默认为 1，会进行缩放 */
+        /* flex-shrink: 1; */
+        /* note: 但是若是子元素内部的元素超出的话就会出现溢出（正常盒模型现象） */
+        /* flex-grow: 0; */
+        width: 10px;
+        height: 10px;
+        /* 居中 */
+        margin: auto;
+        background-color: green;
+      }
+
+      .box4 .item .child-item {
+        width: 200px;
+        height: 20px;
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 style="text-align: center; margin-bottom: 20px">Hello Flex</h2>
+    <div class="box4">
+      <div class="item">
+        <!-- <div class="child-item"></div> -->
+      </div>
+      <!-- <div class="item">11111111111111111111111111</div> -->
+    </div>
+    <div class="box3">
+      <div class="item">
+        <a href="#">01</a>
+      </div>
+      <div class="line"></div>
+      <div class="item">测试一下长度</div>
+      <div class="line"></div>
+      <div class="item">03</div>
+    </div>
+
+    <div class="box2">
+      <div class="item1"></div>
+      <div class="item2">
+        <p>1111111</p>
+        <p>22222222222</p>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="item">01</div>
+      <div class="item">02</div>
+      <div class="item">03</div>
+      <div class="item">04</div>
+      <div class="item">05</div>
+    </div>
+  </body>
+</html>

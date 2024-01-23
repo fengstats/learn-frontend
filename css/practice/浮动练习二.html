@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>浮动练习二</title>
+    <style>
+      .content {
+        width: 600px;
+        height: 400px;
+        margin: 0 auto;
+        background-color: orange;
+      }
+      /* .box {
+        padding-left: 1px;
+        margin-right: -1px;
+      } */
+      .item {
+        width: 121px;
+        height: 200px;
+        float: left;
+        border: 1px solid #000;
+        box-sizing: border-box;
+        margin-left: -1px;
+      }
+
+      /* 编写 float 导致高度塌陷案例 */
+      .father {
+        border-bottom: 10px solid #f0f;
+      }
+
+      .universal {
+        color: #fff;
+        float: left;
+      }
+
+      .son {
+        width: 100px;
+        height: 100px;
+        background-color: green;
+      }
+
+      .son-friend {
+        width: 200px;
+        height: 200px;
+        background-color: skyblue;
+      }
+
+      .clear-fix-element {
+        clear: both;
+      }
+
+      .clear-fix {
+        zoom: 1;
+      }
+
+      .clear-fix::after {
+        content: '';
+        clear: both;
+        display: block;
+        /* 为了部分浏览器的兼容性写法 */
+        visibility: hidden;
+        height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="father clear-fix">
+      <div class="universal son">我是儿子</div>
+      <div class="universal son-friend">我是你儿子的朋友</div>
+      <!-- <div class="clear-fix-element"></div> -->
+    </div>
+
+    <div class="content">
+      <div class="box">
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+      </div>
+    </div>
+  </body>
+</html>

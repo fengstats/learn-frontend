@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>transform</title>
+    <style>
+      @keyframes test {
+        0% {
+          /* 通过 transform 形变后的元素不影响其他元素布局 */
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(0, 200px);
+        }
+        50% {
+          transform: translate(200px, 200px);
+        }
+        75% {
+          transform: translate(200px, 0);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+
+      .other-box {
+        width: 100px;
+        height: 100px;
+        background-color: green;
+        animation: test linear 2s;
+        /* animation-fill-mode: forwards; */
+      }
+
+      .container {
+        width: 200px;
+        margin: 100px auto 0;
+        box-sizing: border-box;
+        border: 1px solid;
+      }
+
+      .container .box {
+        height: 100px;
+        background-color: #34495e;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease-in;
+      }
+
+      .container:hover .box {
+        transform: scale(0.5);
+        transform-origin: center 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="other-box"></div>
+    <div class="container">
+      <div class="box"></div>
+    </div>
+  </body>
+</html>

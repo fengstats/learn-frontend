@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BFC float</title>
+    <style>
+      .box {
+        /* TODO：不是说只有 auto height 才能解决吗？为什么 fit-content 也可以呢？ */
+        height: fit-content;
+        background-color: pink;
+        overflow: auto;
+      }
+
+      .item {
+        float: left;
+        width: 200px;
+        height: 200px;
+        margin-top: 10px;
+        margin-right: 20px;
+        background-color: green;
+      }
+
+      /* .clear_fix::after {
+        content: '';
+        display: block;
+        clear: both;
+        height: 0;
+        visibility: hidden;
+      } */
+    </style>
+  </head>
+  <body>
+    <div class="box clear_fix">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+  </body>
+</html>

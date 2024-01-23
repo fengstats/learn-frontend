@@ -1,0 +1,36 @@
+body,
+h1,
+h2,
+h3,
+ul,
+li,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #000;
+  font-size: 12px;
+  text-decoration: none;
+  outline: none;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+input {
+  outline: none;
+  border: none;
+}
+
+img {
+  vertical-align: top;
+  /* 垂直居中对齐 */
+}
+
+i {
+  font-style: normal;
+}

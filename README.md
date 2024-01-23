@@ -1,3 +1,1 @@
-## 教小峰峰一点前端
-
-PUT FIRST THINGS FIRST!
+# 教小小石一点前端！

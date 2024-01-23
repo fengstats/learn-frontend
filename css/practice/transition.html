@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>transition</title>
+    <style>
+      .box {
+        position: relative;
+        width: 100px;
+        height: 200px;
+        margin: 0 auto;
+        line-height: 200px;
+        border-radius: 4px;
+        text-align: center;
+        color: #fff;
+        background-color: #ff6b81;
+        overflow: hidden;
+      }
+      .box:hover .cover {
+        cursor: pointer;
+        opacity: 1;
+      }
+
+      .cover {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 1);
+        transition: opacity 0.2s ease-in;
+      }
+      /* 第二种实现思路: 通过 flex */
+      .cover .i-text {
+        /* 这种思路就比较简单了 */
+        /* 1. 先设置元素宽高(占满整个盒子) */
+        /* 2. 通过 flex 帮助我们调整行内级元素文本进行水平居中对齐 */
+        /* 3. 通过 writing-mode 属性设置实现文本从上到下的垂直展示 */
+        /* 4. 想要调整文本之间的间距, 通过 letter-spacing 增加间距 */
+        /* 5. 发现设置 letter-spacing 后文本距离顶部与底部间距不等, 无法居中了 */
+        /* 6. 通过 text-indent 调整顶部文本缩进解决 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        line-height: normal;
+        writing-mode: vertical-lr;
+        letter-spacing: 0.4rem;
+        text-indent: 0.4rem;
+      }
+      /* 第一种实现思路 */
+      .-cover .i-text {
+        position: absolute;
+        /* TODO: 测试发现这里给个 letter-spacing 的一半就刚刚好能让它居中了, 原理是啥不懂 */
+        top: 0.2rem;
+        left: 0;
+        right: 0;
+        width: fit-content;
+        height: 100%;
+        margin: 0 auto;
+        /* 消除 box 中 line-height 带来的高度影响  */
+        line-height: normal;
+        font-size: 16px;
+        /* 将内容从上到下垂直流动 */
+        writing-mode: vertical-lr;
+        /* 垂直流动的文本居中(垂直居中, 本来应该是水平居中的) */
+        text-align: center;
+        letter-spacing: 0.4rem;
+        color: #f3c258;
+        /* background-color: #fff; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      移过来试试
+      <div class="cover">
+        <span class="i-text">斩杀瑶</span>
+      </div>
+    </div>
+  </body>
+</html>

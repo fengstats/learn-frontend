@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>浮动练习</title>
+    <style>
+      .container {
+        width: 520px;
+        height: 400px;
+        background-color: skyblue;
+        margin: 0 auto;
+      }
+
+      .box {
+        /* 
+        因为 box 盒子的宽度我并未设置，所以默认值是 auto 
+        父元素宽度在子元素默认值 auto 的情况下会 = margin-left + margin-right + 实际盒子大小
+        我给了 margin-left 一个负值，相当于想要等式成立，子元素实际盒子的大小需要加上这个负值
+        所以，实际上，我的 box 盒子已经超过了父元素宽度了
+        */
+        margin-left: -5px;
+      }
+
+      .item {
+        width: 100px;
+        height: 100px;
+        color: #fff;
+        text-align: center;
+        background-color: brown;
+
+        float: left;
+        margin-top: 10px;
+        margin-left: 5px;
+      }
+
+      .test-feng {
+        width: 100px;
+        height: 100px;
+        border: 20px solid red;
+        box-sizing: border-box;
+        background-color: saddlebrown;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box">
+        <div class="item item1">我是内容</div>
+        <div class="item item2">我是内容</div>
+        <div class="item item3">我是内容</div>
+        <div class="item item4">我是内容</div>
+        <div class="item item5">我是内容</div>
+        <div class="item item6">我是内容</div>
+        <div class="item item7">我是内容</div>
+        <div class="item item8">我是内容</div>
+        <div class="item item9">我是内容</div>
+        <div class="item item10">我是内容</div>
+      </div>
+    </div>
+
+    <div class="test-feng"></div>
+  </body>
+</html>

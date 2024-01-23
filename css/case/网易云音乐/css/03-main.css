@@ -1,0 +1,42 @@
+.main {
+  margin-top: 20px;
+  background-color: #f5f5f5;
+}
+.main .box {
+  display: flex;
+  justify-content: space-between;
+  height: 500px;
+  border: 1px solid #ccc;
+  border-width: 0 1px;
+  background: url(../images/main_bg.png);
+}
+.main .area-left {
+  width: 729px;
+}
+.main .area-right {
+  width: 250px;
+}
+.main .area-right .login {
+  height: 126px;
+  background: url(../images/main_login_sprite.png);
+}
+.main .area-right .login p {
+  margin: 0 auto;
+  padding: 16px;
+  line-height: 22px;
+  font-size: 12px;
+  color: #666;
+}
+.main .area-right .login a {
+  display: block;
+  width: 100px;
+  height: 31px;
+  margin: 0 auto;
+  line-height: 31px;
+  text-align: center;
+  color: #fff;
+  background: url(../images/main_login_sprite.png) 0 -195px;
+}
+.main .area-right .login a:hover {
+  background-position-x: -110px;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>行内元素的边距</title>
+    <style>
+      body {
+        font-size: 50px;
+      }
+      div {
+        border: 1px solid #000;
+      }
+
+      span {
+        /* 设置了 margin 之后, 上下 margin 没有生效, 左右生效了 */
+        margin: 50px;
+        /* 设置了 padding 之后, 上下 padding 实际上没有生效了(不会对周围元素产生影响), 不过从显示的角度看上确实生效了(影响了自己的 background 和 border) */
+        padding: 20px;
+        color: #fff;
+        border-bottom: 4px solid red;
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div>第1个div</div>
+    <span>中间的span </span>
+    <div>第2个div</div>
+  </body>
+</html>

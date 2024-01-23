@@ -1,0 +1,98 @@
+.banner {
+  background: url(../images/banner_01_blur.jpg) 6000px;
+  .box {
+    display: flex;
+    position: relative;
+    width: 982px;
+    height: 285px;
+    .banner-sprite {
+      background: url(../images/banner_sprite.png) no-repeat;
+    }
+    .left-img {
+      position: relative;
+      width: 730px;
+      .img-list .item img {
+        width: 100%;
+      }
+      .dot-list {
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 20px;
+        bottom: 10px;
+        .item {
+          display: block;
+          width: 20px;
+          height: 20px;
+          margin: 0 2px;
+          background-position: 3px -343px;
+        }
+        .item:hover,
+        .item.active {
+          background-position-x: -16px;
+        }
+      }
+    }
+    .right-download {
+      position: absolute;
+      right: -1px;
+      width: 254px;
+      top: 0;
+      bottom: 0;
+      background: url(../images/download_sprite.png) no-repeat;
+      a {
+        display: block;
+        width: 215px;
+        height: 56px;
+        margin: 186px 0 0 19px;
+        text-indent: -9999px;
+        background: inherit;
+        background-position: 0 99999px;
+        &:hover {
+          background-position: 0 -290px;
+        }
+      }
+      p {
+        font-size: 12px;
+        color: #aaa;
+        text-align: center;
+      }
+      .shadow {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+      }
+      .shadowl {
+        left: -20px;
+        background-position: -1px 0;
+      }
+      .shadowr {
+        right: -20px;
+        background-position: -20px 0;
+      }
+    }
+    .box-change {
+      position: absolute;
+      width: 37px;
+      height: 63px;
+      top: 0;
+      bottom: 0;
+      margin: auto 0;
+      text-indent: -99999px;
+      &:hover {
+        background-color: #0000002f;
+      }
+    }
+    .img-prev {
+      left: -65px;
+      background-position-y: -360px;
+    }
+    .img-next {
+      right: -65px;
+      background-position-y: -508px;
+    }
+  }
+}

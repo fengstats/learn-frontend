@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>定位练习</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: purple;
+
+        display: inline-block;
+      }
+
+      .box1 {
+        background-color: red;
+        position: relative;
+        left: 20px;
+
+        /* z-index 只对定位元素有效 */
+        /* z-index: -999; */
+      }
+
+      /* .box2 {
+        z-index: 2;
+      } */
+      .banner {
+        overflow: hidden;
+      }
+
+      .banner img {
+        position: relative;
+        /* 图片永远居中对齐 */
+        /* margin 和 left 都是相对于 containing block 父元素定位/移动的 */
+        /* margin-left: 50%; */
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .father {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        background-color: skyblue;
+      }
+
+      .son {
+        position: absolute;
+        width: 200px;
+        right: 0;
+        bottom: 0;
+      }
+
+      .son2 {
+        position: absolute;
+        left: 0;
+        right: 0;
+        /* 定位参照对象/在这里是 father 盒子的宽度
+         = left + right + margin-left + margin-right + 该元素实际占用宽度
+         margin 默认为 0，等式不成立，所以位置在哪需要看浏览器怎么决定渲染了
+         但是我们只要给 margin 左右赋值为 auto，此时，元素就会水平居中了 
+         */
+        /* margin:0 auto; */
+        /* 同理：我们如果想要元素垂直居中时，只需要给 top 和 bottom 设置为 0，且 margin 上下设置为 auto 即可 */
+        /* 相对比 flex 布局的好处是，兼容情况很好，浏览器基本上都能支持，而且很精准 */
+        /* 注意！！！需要给元素设置宽度以及高度，否则根据 auto 特性将会被铺满 */
+        /* auto：浏览器自己决定如何设置，当 left/right/top/bottom 设置为 auto 时，无反应 */
+        /* left auto 时看 right 的值，反之则看 left 的值，如果都是 auto，那就无效 */
+        /* width: auto; */
+        /* height: auto; */
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+
+      strong {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+      }
+
+      span {
+        /* position: relative; */
+        /* position: absolute; */
+        position: fixed;
+        bottom: 20px;
+        right: 0;
+        width: 200px;
+        height: 200px;
+        background-color: antiquewhite;
+      }
+
+      .container {
+        /* position: relative; */
+        width: 200px;
+        height: 200px;
+        background-color: green;
+      }
+
+      .container .test-location {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background-color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <div class="test-location"></div>
+      </div>
+    </div>
+
+    <!-- <div class="box box1"></div>
+    <div class="box box2"></div> -->
+    <div class="banner">
+      <img
+        src="https://ossweb-img.qq.com/upload/webplat/info/yxzj/20230223/73316258365675.jpg"
+        alt=""
+      />
+    </div>
+
+    <div class="box father">
+      <div class="box son">
+        <strong>我是strong元素</strong>
+      </div>
+    </div>
+
+    <span class="inline-block"
+      >我是一个span元素，我要看看我被设置成定位元素之后是否可以设置宽高 <br /><br /><br />
+      经过测试发现，设置为 absolute/fixed 时，可以随意设置宽高
+    </span>
+
+    <div class="box father">
+      <div class="box son2">111</div>
+    </div>
+  </body>
+</html>

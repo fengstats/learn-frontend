@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>html2canvas 示例</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc;
+        box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>页面标题</h1>
+    <p>这里是一些段落内容，你可以将它和其他内容一起截图。</p>
+
+    <div class="box">2222</div>
+
+    <button id="capture-btn">生成截图并复制</button>
+
+    <script src="./dom-to-image.min.js"></script>
+    <script>
+      document.getElementById('capture-btn').addEventListener('click', async function () {
+        const data = await domtoimage.toBlob(document.body)
+
+        // console.log(data)
+        //   document.body.appendChild(data)
+
+        // 使用新的剪贴板API复制图片
+        navigator.clipboard
+          .write([new ClipboardItem({ 'image/png': data })])
+          .then(function () {
+            alert('截图已复制到剪贴板！')
+          })
+          .catch(function (error) {
+            console.error('复制到剪贴板失败:', error)
+          })
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>flex布局最后一行靠左排布</title>
+    <style>
+      .container {
+        display: flex;
+        width: 600px;
+        margin: 0 auto;
+        padding: 10px;
+        padding-top: 0;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        text-align: center;
+        background-color: #ced4da;
+      }
+
+      .item {
+        width: 130px;
+        height: 100px;
+        margin-top: 10px;
+        line-height: 100px;
+        color: #fff;
+        background-color: #004578;
+      }
+
+      .add-item {
+        /* 和 item 设置一样的宽度即可，这样在 flex container 中就会被当做占位 item */
+        /* 若最后只能放下一个时，不够空间的则会到下一行去，但是因为没有高度所以不会显示 */
+        /* 算是一个比较好的解决方案，就是要添加额外的 html 元素 */
+        width: 130px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+      <div class="item">6</div>
+      <div class="item">7</div>
+      <div class="item">8</div>
+      <div class="item">9</div>
+      <div class="item">0</div>
+      <div class="item">0</div>
+      <!-- i 元素的个数取决于当前 [cross axis 数量 - 2] -->
+      <!-- 第一个不需要考虑，因为默认两端对齐 [space-between] -->
+      <i class="add-item"></i>
+      <i class="add-item"></i>
+    </div>
+  </body>
+</html>

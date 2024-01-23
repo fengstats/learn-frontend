@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>水平居中</title>
+    <style>
+      .container {
+        /* 4. flex */
+        /* display: flex;
+        justify-content: center; */
+        /* 3. 定位: 父元素设置相对定位 */
+        /* position: relative; */
+        height: 400px;
+        /* 1. 子元素设置为行内块级元素且拥有固定宽度, 父元素设置如下 */
+        /* text-align: center; */
+        border: 1px solid #000;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: green;
+      }
+
+      ._box5 {
+        margin-left: 50%;
+        /* 5. 通过 translateX */
+        transform: translateX(-50%);
+      }
+
+      ._box3 {
+        /* 3. 子元素拥有固定宽度且为绝对定位, 设置如下 */
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+      }
+
+      ._box2 {
+        /* 2. 块级元素并且有用固定宽度, 设置如下 */
+        margin: 0 auto;
+      }
+
+      ._box1 {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box box1 box2 box3 box5"></div>
+    </div>
+  </body>
+</html>

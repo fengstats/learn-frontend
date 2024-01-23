@@ -1,0 +1,128 @@
+.top {
+  background-color: #242424;
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    height: 70px;
+    line-height: 70px;
+
+    .bar-left {
+      display: flex;
+      color: #ccc;
+      .logo {
+        width: 176px;
+        background: url(../images/topbar.png) 0 0;
+        a {
+          display: block;
+          text-indent: -99999px;
+        }
+      }
+      .list {
+        display: flex;
+        .item {
+          display: block;
+          position: relative;
+          padding: 0 19px;
+          color: #ccc;
+          font-size: 14px;
+          &.active,
+          &:hover {
+            color: #fff;
+            background-color: #000;
+          }
+          // 小红箭头
+          &.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 12px;
+            height: 7px;
+            // 后面是 bg-size
+            background: url(../images/topbar.png) -105px -70px/120px auto;
+          }
+          &.hot::after {
+            position: absolute;
+            top: 21px;
+            left: 100px;
+          }
+        }
+      }
+    }
+
+    .bar-right {
+      display: flex;
+      align-items: center;
+      padding-right: 22px;
+      .item {
+        height: 32px;
+        line-height: 32px;
+      }
+      .search {
+        // position: relative;
+        display: flex;
+        align-items: center;
+        width: 158px;
+        padding-left: 26px;
+        box-sizing: border-box;
+        border-radius: 32px;
+        background: url(../images/topbar.png) 0 -99px;
+        background-color: #fff;
+        input {
+          // position: absolute;
+          // top: 0;
+          // bottom: 0;
+          // margin: auto 0;
+          width: 112px;
+          font-size: 12px;
+        }
+      }
+      .author {
+        width: 90px;
+        margin: 0 15px;
+        border: 1px solid #4f4f4f;
+        border-radius: 20px;
+        color: #ccc;
+        text-align: center;
+        &:hover {
+          color: #fff;
+          border-color: #fff;
+        }
+      }
+      .login {
+        color: #888;
+        &:hover {
+          color: #fff;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.nav {
+  height: 35px;
+  background-color: #c20c0c;
+  .navbar {
+    padding-left: 180px;
+    box-sizing: border-box;
+    .list {
+      display: flex;
+      align-items: center;
+      height: 34px;
+      .item {
+        margin: 0 17px;
+        padding: 2px 12px;
+        font-size: 12px;
+        color: #fff;
+      }
+      .active {
+        border-radius: 10px;
+        background-color: #0000002f;
+      }
+    }
+  }
+}

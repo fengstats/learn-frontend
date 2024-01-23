@@ -1,0 +1,27 @@
+body {
+  /* 设置一个最小宽度, 找项目中需要的最大宽度值, 
+  这样能保证内部其余内容都能显示以及网页缩放时宽度背景等显示效果正常 */
+  min-width: 1100px;
+}
+
+.wrapper_01 {
+  width: 1100px;
+  margin: 0 auto;
+}
+
+.wrapper_02 {
+  width: 980px;
+  margin: 0 auto;
+}
+
+.wrapper_03 {
+  width: 982px;
+  margin: 0 auto;
+}
+
+.icon_hot::after {
+  content: '';
+  width: 28px;
+  height: 19px;
+  background: url(../images/topbar.png) -190px 0;
+}

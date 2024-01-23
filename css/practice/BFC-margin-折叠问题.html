@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>margin</title>
+    <style>
+      body {
+        /* TODO：为什么我给 body 设置背景色，整个网页都有？明明容器没有这么大 */
+        background-color: #fefe;
+      }
+      .box {
+        /* margin-top: 10px; */
+        /* display: flex; */
+      }
+      .box .container {
+        /* 让内部的元素形成一个新的 BFC */
+        overflow: hidden;
+      }
+      .box .item {
+        /* display: inline-block; */
+        width: 200px;
+        height: 200px;
+        background-color: green;
+        /* 上下 margin 折叠了 */
+        margin: 50px auto;
+        /* 左右 margin 没有 */
+        /* margin: 0 50px; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="container">
+        <div class="item">1</div>
+      </div>
+      <div class="item">2</div>
+    </div>
+  </body>
+</html>

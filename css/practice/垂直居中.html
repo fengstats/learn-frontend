@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>垂直居中</title>
+    <style>
+      /* 前提: 子元素有用固定高度 */
+      .container {
+        /* 1. flex */
+        /* display: flex;
+        align-items: center; */
+        /* 2. 定位 */
+        position: relative;
+        height: 400px;
+        /* line-height: 400px; */
+        border: 1px solid #000;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: green;
+      }
+      .-box1 {
+        display: inline-block;
+        line-height: 100px;
+      }
+      .-box2 {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+      }
+      .-box3 {
+        /* 3. 定位+transform */
+        /* 需要注意的是, 不要用 margin 替代定位, 因为这并不适用于垂直居中,
+           margin 设置百分比(percentage) 后是会基于包含块/父元素宽度的 */
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box box1 box2 box3">111</div>
+    </div>
+  </body>
+</html>

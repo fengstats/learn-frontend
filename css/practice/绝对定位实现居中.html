@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>绝对定位实现居中</title>
+    <style>
+      .box {
+        position: relative;
+        width: 200px;
+        height: 300px;
+        background-color: green;
+        border: 1px solid #000;
+      }
+
+      .son {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        /* 想要通过绝对定位来实现水平垂直居中需要子元素设置宽度与高度 */
+        /* 否则的话因为默认的 width/height 是 auto, 会把父元素占满 */
+        width: 80px;
+        height: 80px;
+        text-align: center;
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="son">我是子元素</div>
+    </div>
+  </body>
+</html>
